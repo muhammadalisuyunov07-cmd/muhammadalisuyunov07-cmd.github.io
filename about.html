@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Muhammad Ali | Creative Portfolio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:#050816;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar{
+      width:10px;
+    }
+
+    ::-webkit-scrollbar-thumb{
+      background:linear-gradient(#00f0ff,#7a5cff);
+      border-radius:20px;
+    }
+
+    /* BACKGROUND */
+    body::before{
+      content:"";
+      position:fixed;
+      width:600px;
+      height:600px;
+      background:radial-gradient(circle,#7a5cff33,transparent 70%);
+      top:-200px;
+      left:-200px;
+      z-index:-1;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      width:500px;
+      height:500px;
+      background:radial-gradient(circle,#00f0ff22,transparent 70%);
+      bottom:-200px;
+      right:-200px;
+      z-index:-1;
+    }
+
+    /* NAVBAR */
+    nav{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:20px 8%;
+      position:fixed;
+      top:0;
+      z-index:999;
+      backdrop-filter:blur(15px);
+      background:rgba(0,0,0,0.25);
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+
+    nav h1{
+      font-size:28px;
+      background:linear-gradient(to right,#00f0ff,#7a5cff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      font-weight:700;
+    }
+
+    nav ul{
+      display:flex;
+      gap:30px;
+      list-style:none;
+    }
+
+    nav ul li a{
+      text-decoration:none;
+      color:white;
+      transition:0.3s;
+      font-weight:500;
+    }
+
+    nav ul li a:hover{
+      color:#00f0ff;
+    }
+
+    /* HERO */
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:120px 8%;
+      flex-wrap:wrap;
+      gap:50px;
+    }
+
+    .hero-text{
+      flex:1;
+      min-width:300px;
+    }
+
+    .hero-text h2{
+      font-size:25px;
+      color:#00f0ff;
+      margin-bottom:10px;
+    }
+
+    .hero-text h1{
+      font-size:70px;
+      line-height:1.1;
+      margin-bottom:20px;
+    }
+
+    .hero-text p{
+      color:#bcbcbc;
+      line-height:1.8;
+      max-width:600px;
+      margin-bottom:30px;
+    }
+
+    .btns{
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:14px 30px;
+      border:none;
+      border-radius:40px;
+      cursor:pointer;
+      font-size:16px;
+      transition:0.4s;
+      text-decoration:none;
+      display:inline-block;
+      font-weight:600;
+    }
+
+    .primary{
+      background:linear-gradient(to right,#00f0ff,#7a5cff);
+      color:white;
+      box-shadow:0 0 20px #00f0ff55;
+    }
+
+    .primary:hover{
+      transform:translateY(-5px) scale(1.05);
+    }
+
+    .secondary{
+      border:2px solid #00f0ff;
+      color:#00f0ff;
+      background:transparent;
+    }
+
+    .secondary:hover{
+      background:#00f0ff;
+      color:black;
+    }
+
+    /* IMAGE */
+    .hero-image{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      min-width:300px;
+    }
+
+    .circle{
+      width:380px;
+      height:380px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#00f0ff,#7a5cff);
+      padding:8px;
+      animation:rotate 8s linear infinite;
+    }
+
+    .circle img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:50%;
+      border:8px solid #050816;
+    }
+
+    @keyframes rotate{
+      100%{
+        transform:rotate(360deg);
+      }
+    }
+
+    /* SECTION */
+    section{
+      padding:100px 8%;
+    }
+
+    .title{
+      text-align:center;
+      margin-bottom:60px;
+    }
+
+    .title h2{
+      font-size:45px;
+      margin-bottom:15px;
+    }
+
+    .title p{
+      color:#aaa;
+    }
+
+    /* CARDS */
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:30px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:25px;
+      padding:35px;
+      transition:0.4s;
+      backdrop-filter:blur(10px);
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+      border-color:#00f0ff;
+      box-shadow:0 0 25px #00f0ff22;
+    }
+
+    .card h3{
+      margin:20px 0;
+      font-size:24px;
+    }
+
+    .card p{
+      color:#bcbcbc;
+      line-height:1.7;
+    }
+
+    .icon{
+      font-size:50px;
+    }
+
+    /* SKILLS */
+    .skills{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:25px;
+    }
+
+    .skill{
+      background:rgba(255,255,255,0.05);
+      padding:25px;
+      border-radius:20px;
+      text-align:center;
+      transition:0.4s;
+    }
+
+    .skill:hover{
+      transform:scale(1.05);
+      background:#00f0ff11;
+    }
+
+    .skill h4{
+      margin-top:15px;
+      font-size:20px;
+    }
+
+    /* CONTACT */
+    .contact-box{
+      max-width:700px;
+      margin:auto;
+      background:rgba(255,255,255,0.05);
+      padding:40px;
+      border-radius:25px;
+      backdrop-filter:blur(10px);
+    }
+
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    input,textarea{
+      padding:15px;
+      border:none;
+      outline:none;
+      border-radius:15px;
+      background:#111827;
+      color:white;
+      font-size:16px;
+    }
+
+    textarea{
+      resize:none;
+      height:150px;
+    }
+
+    button{
+      border:none;
+      padding:16px;
+      border-radius:15px;
+      background:linear-gradient(to right,#00f0ff,#7a5cff);
+      color:white;
+      font-size:17px;
+      cursor:pointer;
+      transition:0.4s;
+      font-weight:600;
+    }
+
+    button:hover{
+      transform:translateY(-4px);
+      box-shadow:0 0 20px #00f0ff66;
+    }
+
+    /* FOOTER */
+    footer{
+      padding:30px;
+      text-align:center;
+      color:#888;
+      border-top:1px solid rgba(255,255,255,0.08);
+      margin-top:50px;
+    }
+
+    /* ANIMATION */
+    .fade{
+      opacity:0;
+      transform:translateY(40px);
+      transition:1s;
+    }
+
+    .fade.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+
+      .hero-text h1{
+        font-size:50px;
+      }
+
+      nav ul{
+        gap:15px;
+      }
+
+      .circle{
+        width:300px;
+        height:300px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <h1>ALI.</h1>
+
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+
+    <div class="hero-text fade">
+      <h2>Creative Developer</h2>
+
+      <h1>
+        Modern & Powerful <br>
+        Portfolio Website
+      </h1>
+
+      <p>
+        High level creative portfolio website with modern UI/UX,
+        smooth animations, glassmorphism design, secure structure,
+        responsive layout and premium dark aesthetic.
+      </p>
+
+      <div class="btns">
+        <a href="#" class="btn primary">Explore More</a>
+        <a href="#contact" class="btn secondary">Contact Me</a>
+      </div>
+    </div>
+
+    <div class="hero-image fade">
+      <div class="circle">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop" alt="">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+
+    <div class="title fade">
+      <h2>My Services</h2>
+      <p>Professional and modern digital solutions</p>
+    </div>
+
+    <div class="cards">
+
+      <div class="card fade">
+        <div class="icon">💻</div>
+        <h3>Web Development</h3>
+        <p>
+          Responsive and modern websites using advanced frontend technologies.
+        </p>
+      </div>
+
+      <div class="card fade">
+        <div class="icon">🎨</div>
+        <h3>UI/UX Design</h3>
+        <p>
+          Clean and premium user interface designs with smooth experiences.
+        </p>
+      </div>
+
+      <div class="card fade">
+        <div class="icon">⚡</div>
+        <h3>Fast Performance</h3>
+        <p>
+          Optimized code structure with high speed and security improvements.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+
+    <div class="title fade">
+      <h2>Skills</h2>
+      <p>Technologies and tools I use</p>
+    </div>
+
+    <div class="skills">
+
+      <div class="skill fade">
+        <h4>HTML5</h4>
+      </div>
+
+      <div class="skill fade">
+        <h4>CSS3</h4>
+      </div>
+
+      <div class="skill fade">
+        <h4>JavaScript</h4>
+      </div>
+
+      <div class="skill fade">
+        <h4>Responsive Design</h4>
+      </div>
+
+      <div class="skill fade">
+        <h4>Animations</h4>
+      </div>
+
+      <div class="skill fade">
+        <h4>UI/UX</h4>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+
+    <div class="title fade">
+      <h2>Contact Me</h2>
+      <p>Let's build something amazing together</p>
+    </div>
+
+    <div class="contact-box fade">
+
+      <form>
+
+        <input type="text" placeholder="Your Name" required>
+
+        <input type="email" placeholder="Your Email" required>
+
+        <textarea placeholder="Your Message"></textarea>
+
+        <button type="submit">
+          Send Message
+        </button>
+
+      </form>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 Creative Portfolio | Designed By Muhammad Ali
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+
+    // SCROLL ANIMATION
+
+    const fadeElements = document.querySelectorAll('.fade');
+
+    function showOnScroll() {
+
+      fadeElements.forEach((el) => {
+
+        const position = el.getBoundingClientRect().top;
+        const screen = window.innerHeight / 1.2;
+
+        if(position < screen){
+          el.classList.add('show');
+        }
+
+      });
+
+    }
+
+    window.addEventListener('scroll', showOnScroll);
+
+    showOnScroll();
+
+    // CONTACT FORM
+
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit",(e)=>{
+
+      e.preventDefault();
+
+      alert("Message Successfully Sent 🚀");
+
+      form.reset();
+
+    });
+
+  </script>
+
+</body>
+</html>
