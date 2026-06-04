@@ -1,0 +1,3428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GearHead - Auto & Moto Repair Learning Academy</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. DESIGN SYSTEM & VARIABLE DEFINITIONS
+           ========================================== */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #121212;
+            --bg-tertiary: #1a1a1a;
+            --accent: #FF4500;
+            --accent-glow: rgba(255, 69, 0, 0.4);
+            --accent-hover: #ff5e1a;
+            --text-primary: #F5F5F5;
+            --text-secondary: #a0a0a0;
+            --text-dark: #606060;
+            --success: #39ff14;
+            --success-glow: rgba(57, 255, 20, 0.3);
+            --error: #ff073a;
+            --border-color: #2b2b2b;
+            --grid-line: rgba(255, 69, 0, 0.05);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        body {
+            line-height: 1.6;
+            background-image: 
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            border: 2px solid var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .section-header h2 span {
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        /* Buttons & Badges */
+        .btn {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--accent);
+            padding: 0.8rem 2rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .btn:hover {
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px var(--accent-glow);
+            border-color: var(--accent);
+        }
+
+        .badge {
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-family: 'Bebas Neue', sans-serif;
+            padding: 0.2rem 0.8rem;
+            letter-spacing: 1px;
+            font-size: 1rem;
+            display: inline-block;
+            border-radius: 2px;
+        }
+
+        /* ==========================================
+           2. HEADER & NAVIGATION
+           ========================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo svg {
+            width: 35px;
+            height: 35px;
+            fill: var(--accent);
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .logo-text span {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        nav ul li a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.3rem 0;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 0.3rem;
+            margin-left: 1.5rem;
+        }
+
+        .lang-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.4rem 0.6rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .lang-btn:hover:not(.active) {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        /* Mobile Nav Toggle */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* ==========================================
+           3. HERO SECTION
+           ========================================== */
+        #hero {
+            height: 100vh;
+            min-height: 600px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.95)), url('https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .hero-logo-box {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1rem;
+            animation: float-wrench 4s infinite ease-in-out;
+        }
+
+        .hero-logo-box .gear {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            fill: var(--text-dark);
+            animation: rotate-gear 20s infinite linear;
+        }
+
+        .hero-logo-box .wrench {
+            position: absolute;
+            top: 15%;
+            left: 15%;
+            width: 70%;
+            height: 70%;
+            fill: var(--accent);
+            transform-origin: center;
+            animation: tilt-wrench 3s infinite ease-in-out;
+        }
+
+        .hero-content h1 {
+            font-size: 5.5rem;
+            line-height: 1;
+            color: var(--text-primary);
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+        }
+
+        .hero-content h1 span {
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .hero-content p {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            max-width: 650px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+        }
+
+        /* ==========================================
+           4. VEHICLE GALLERY SHOWROOM
+           ========================================== */
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .gallery-category {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .category-title {
+            font-size: 2.2rem;
+            color: var(--text-primary);
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            margin-left: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .horizontal-scroll {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding: 1rem 0.5rem;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
+        }
+
+        .vehicle-card {
+            min-width: 280px;
+            max-width: 280px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            scroll-snap-align: start;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        .vehicle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .vehicle-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.15);
+        }
+
+        .vehicle-image-wrapper {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .vehicle-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .vehicle-card:hover .vehicle-image-wrapper img {
+            transform: scale(1.1);
+        }
+
+        .vehicle-card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent, rgba(10, 10, 10, 0.9));
+            z-index: 1;
+        }
+
+        .vehicle-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 2;
+        }
+
+        .vehicle-info .category-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .vehicle-info h3 {
+            font-size: 1.8rem;
+            line-height: 1.1;
+            color: var(--text-primary);
+        }
+
+        .vehicle-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .inspect-badge {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            text-transform: uppercase;
+            transition: var(--transition);
+        }
+
+        .inspect-badge svg {
+            width: 15px;
+            height: 15px;
+            fill: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .vehicle-card:hover .inspect-badge {
+            color: var(--accent);
+        }
+
+        .vehicle-card:hover .inspect-badge svg {
+            fill: var(--accent);
+            transform: translateX(4px);
+        }
+
+        /* ==========================================
+           5. DETAILS MODAL
+           ========================================== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 1.5rem;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-top: 4px solid var(--accent);
+            max-width: 800px;
+            width: 100%;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: var(--transition);
+        }
+
+        .modal-close-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+        }
+
+        .modal-image-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-image-box img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-blueprint-view {
+            border: 1px dashed var(--accent);
+            background: rgba(255, 69, 0, 0.02);
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        .blueprint-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .blueprint-title svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--accent);
+        }
+
+        .blueprint-grid {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .blueprint-line {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dotted var(--border-color);
+            padding-bottom: 0.2rem;
+        }
+
+        .blueprint-line span:first-child {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-info-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-info-box .category-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .modal-info-box h2 {
+            font-size: 3.5rem;
+            line-height: 1;
+            text-align: left;
+        }
+
+        .modal-spec-badge {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-left: 3px solid var(--accent);
+        }
+
+        .modal-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .modal-repairs-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            margin-top: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3rem;
+        }
+
+        .modal-repairs-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .modal-repairs-list li {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .modal-repairs-list li::before {
+            content: '⚙';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* ==========================================
+           6. LEARNING PATHS (LEVELS)
+           ========================================== */
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .level-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            border-radius: 4px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .level-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            transition: var(--transition);
+        }
+
+        .level-card:hover::after {
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 69, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .level-icon-wrapper {
+            width: 70px;
+            height: 70px;
+            background: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .level-icon-wrapper svg {
+            width: 35px;
+            height: 35px;
+            fill: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .level-card:hover .level-icon-wrapper {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .level-card:hover .level-icon-wrapper svg {
+            fill: var(--bg-primary);
+        }
+
+        .level-card h3 {
+            font-size: 2rem;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        .level-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* ==========================================
+           7. VIDEO LESSONS (YOUTUBE GRID)
+           ========================================== */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 0.6rem 2rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .filter-btn:hover:not(.active) {
+            border-color: var(--accent);
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .video-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        .video-card.hidden {
+            display: none;
+        }
+
+        .video-embed-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-embed-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-card-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .video-card-info .video-category {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .video-card-info h3 {
+            font-size: 1.4rem;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        /* ==========================================
+           8. REPAIR GUIDES SECTION
+           ========================================== */
+        .guide-selection-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .guide-select {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem 1.5rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        .guide-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .guide-slider-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .guide-steps-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .guide-progress-bar-bg {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 3px;
+            background: var(--bg-tertiary);
+            z-index: 1;
+        }
+
+        .guide-progress-bar-fill {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 0%;
+            height: 3px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+            z-index: 2;
+            transition: width 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .guide-step-node {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            z-index: 3;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .guide-step-node.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .guide-step-node.completed {
+            background: var(--bg-primary);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .guide-slide {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            min-height: 250px;
+        }
+
+        .guide-slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .guide-slide-content h3 {
+            font-size: 2.2rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .guide-slide-content p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .guide-slide-graphic {
+            border: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 250px;
+            position: relative;
+        }
+
+        .guide-slide-graphic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .guide-nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+        }
+
+        /* ==========================================
+           9. DIAGNOSTIC SCANNER QUIZ
+           ========================================== */
+        .quiz-wrapper {
+            max-width: 750px;
+            margin: 0 auto;
+            background: #020202;
+            border: 3px solid #303030;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .quiz-scanner-header {
+            background: #1e1e1e;
+            border-bottom: 2px solid #303030;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .scanner-logo-text {
+            color: var(--accent);
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+
+        .scanner-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--success);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success-glow);
+            animation: pulse-glow 1.5s infinite;
+        }
+
+        .quiz-screen {
+            padding: 2.5rem;
+            position: relative;
+            background-image: 
+                radial-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 0),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(10, 10, 10, 0.98));
+            background-size: 10px 10px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .quiz-screen-start {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .quiz-screen-start svg {
+            width: 80px;
+            height: 80px;
+            fill: var(--accent);
+        }
+
+        .quiz-screen-start p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 500px;
+        }
+
+        .quiz-question-box {
+            display: none;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .quiz-question-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.8rem;
+        }
+
+        .quiz-question-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            color: var(--accent);
+        }
+
+        .quiz-progress-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .quiz-question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .quiz-options-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+        }
+
+        .quiz-option-btn {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-option-btn:hover:not(.disabled) {
+            border-color: var(--accent);
+            background: rgba(255, 69, 0, 0.05);
+            padding-left: 1.8rem;
+        }
+
+        .quiz-option-btn.correct {
+            border-color: var(--success);
+            background: rgba(57, 255, 20, 0.05);
+            color: var(--success);
+        }
+
+        .quiz-option-btn.incorrect {
+            border-color: var(--error);
+            background: rgba(255, 7, 58, 0.05);
+            color: var(--error);
+        }
+
+        .quiz-option-btn.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .option-indicator {
+            font-weight: 700;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+            min-height: 50px;
+        }
+
+        .quiz-navigation .btn {
+            display: none;
+        }
+
+        /* Results Screen */
+        .quiz-screen-results {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 1.5rem;
+        }
+
+        .score-circle-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .score-svg-circle-bg {
+            fill: none;
+            stroke: var(--bg-tertiary);
+            stroke-width: 8;
+        }
+
+        .score-svg-circle-fill {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 8;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 440;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease-out;
+        }
+
+        .score-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: var(--text-primary);
+            z-index: 2;
+        }
+
+        .rank-label {
+            font-size: 1.4rem;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .rank-advice {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 500px;
+            margin-bottom: 1rem;
+        }
+
+        /* ==========================================
+           10. FOOTER
+           ========================================== */
+        footer {
+            background: #050505;
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 2rem 2rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.4rem;
+            width: fit-content;
+        }
+
+        .footer-col p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-links li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .footer-links li a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .social-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .social-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .social-btn:hover svg {
+            fill: var(--bg-primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-bottom-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ==========================================
+           11. CSS ANIMATIONS & LOAD TIMING
+           ========================================== */
+        @keyframes rotate-gear {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes tilt-wrench {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+        }
+
+        @keyframes float-wrench {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Fade-in and Slide-up animations for content loading */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================
+           12. RESPONSIVE DESIGN (MEDIA QUERIES)
+           ========================================== */
+        @media (max-width: 1024px) {
+            .levels-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+            }
+            .videos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero-content h1 {
+                font-size: 4.5rem;
+            }
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: rgba(10, 10, 10, 0.98);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            }
+
+            nav ul.active {
+                left: 0;
+            }
+
+            .lang-switcher {
+                margin-left: 0;
+            }
+
+            .hero-content h1 {
+                font-size: 3.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .levels-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-slide {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .guide-slide-graphic {
+                height: 200px;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+
+            .modal-image-box {
+                order: 2;
+            }
+
+            .modal-info-box {
+                order: 1;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            .section-header h2 {
+                font-size: 2.3rem;
+            }
+            .guide-steps-progress {
+                margin-bottom: 2rem;
+            }
+            .guide-step-node {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+            .quiz-screen {
+                padding: 1.5rem;
+            }
+            .quiz-option-btn {
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+       HEADER & NAVIGATION
+       ========================================== -->
+    <header id="header">
+        <div class="nav-container">
+            <a href="#hero" class="logo">
+                <!-- Mechanical Cog & Spark Wrench -->
+                <svg viewBox="0 0 100 100">
+                    <path d="M50 15c-19.3 0-35 15.7-35 35s15.7 35 35 35 35-15.7 35-35-15.7-35-35-35zm0 60c-13.8 0-25-11.2-25-25s11.2-25 25-25 25 11.2 25 25-11.2 25-25 25z"/>
+                    <path d="M50 35c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15zm0 20c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z"/>
+                    <path d="M78.6 21.4c-1-1-2.6-1-3.6 0L57.5 38.9c-1-2.5-3-4.5-5.5-5.5l17.5-17.5c1-1 1-2.6 0-3.6s-2.6-1-3.6 0L48.4 29.8c-.9-.2-1.9-.3-2.9-.3-1.9 0-3.8.4-5.5 1.2L24.4 15c-1-1-2.6-1-3.6 0s-1 2.6 0 3.6l15.7 15.7c-.8 1.7-1.2 3.6-1.2 5.5 0 1 .1 2 .3 2.9L19.9 58.4c-1 1-1 2.6 0 3.6s2.6 1 3.6 0l17.5-17.5c2.5 1 4.5 3 5.5 5.5L29 67.5c-1 1-1 2.6 0 3.6s2.6 1 3.6 0L48.3 55.4c.9.2 1.9.3 2.9.3 1.9 0 3.8-.4 5.5-1.2L72.4 70.2c1 1 2.6 1 3.6 0s1-2.6 0-3.6L60.3 50.9c.8-1.7 1.2-3.6 1.2-5.5 0-1-.1-2-.3-2.9l17.4-17.4c1.1-1 1.1-2.7 0-3.7z"/>
+                </svg>
+                <div class="logo-text">Gear<span>Head</span></div>
+            </a>
+            
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="#hero" data-i18n="navHome">Home</a></li>
+                    <li><a href="#gallery" data-i18n="navGallery">Gallery</a></li>
+                    <li><a href="#levels" data-i18n="navLevels">Levels</a></li>
+                    <li><a href="#videos" data-i18n="navVideos">Videos</a></li>
+                    <li><a href="#guides" data-i18n="navGuides">Guides</a></li>
+                    <li><a href="#quiz" data-i18n="navQuiz">Quiz</a></li>
+                </ul>
+            </nav>
+
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="switchLanguage('en')">EN</button>
+                <button class="lang-btn" onclick="switchLanguage('uz')">UZ</button>
+                <button class="lang-btn" onclick="switchLanguage('ru')">RU</button>
+                <button class="lang-btn" onclick="switchLanguage('ko')">KO</button>
+            </div>
+
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==========================================
+       HERO SECTION
+       ========================================== -->
+    <section id="hero">
+        <div class="hero-bg-image"></div>
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content">
+            <div class="hero-logo-box">
+                <!-- Large Rotating Gear -->
+                <svg class="gear" viewBox="0 0 100 100">
+                    <path d="M95 43.5c-.7-2.6-2.1-4.9-3.8-6.9l4.5-6.8-6-6-6.8 4.5c-2-1.8-4.3-3.2-6.9-3.8l-1-8.1h-8.5l-1 8.1c-2.6.7-4.9 2.1-6.9 3.8l-6.8-4.5-6 6 4.5 6.8c-1.8 2-3.2 4.3-3.8 6.9l-8.1 1v8.5l8.1 1c.7 2.6 2.1 4.9 3.8 6.9l-4.5 6.8 6 6 6.8-4.5c2 1.8 4.3 3.2 6.9 3.8l1 8.1h8.5l1-8.1c2.6-.7 4.9-2.1 6.9-3.8l6.8 4.5 6-6-4.5-6.8c1.8-2 3.2-4.3 3.8-6.9l8.1-1v-8.5l-8.1-1zM50 63.5c-7.5 0-13.5-6-13.5-13.5S42.5 36.5 50 36.5 63.5 42.5 63.5 50 57.5 63.5 50 63.5z"/>
+                </svg>
+                <!-- Tilting Wrench -->
+                <svg class="wrench" viewBox="0 0 100 100">
+                    <path d="M85.4 14.6c-4.1-4.1-10.7-4.1-14.8 0L49.1 36.2c-5.7-1.8-12.2-.7-17 3.3L15.3 56.3c-2 1.7-2.3 4.8-.6 6.9.1.2.3.3.4.5L25.3 74c2 1.9 5.2 1.8 7-1l15.3-17.1c4-4.8 5.1-11.3 3.3-17l21.6-21.5c4.1-4.1 4.1-10.7 0-14.8l12.9 12c-4.1 4.1-10.7 4.1-14.8 0z"/>
+                </svg>
+            </div>
+            <h1 data-i18n="heroTitle">Master Auto & Moto Repair</h1>
+            <p data-i18n="heroSubtitle">Your ultimate industrial garage for learning mechanics and servicing vehicles.</p>
+            <a href="#gallery" class="btn" data-i18n="heroCta">Start Learning</a>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       VEHICLE GALLERY SHOWROOM
+       ========================================== -->
+    <section id="gallery" class="reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="galleryTitle">Vehicle Showroom & Specs</h2>
+                <p data-i18n="gallerySubtitle">Select a vehicle to inspect its technical blueprint and typical repairs.</p>
+            </div>
+
+            <div class="gallery-container">
+                <!-- Cars Category -->
+                <div class="gallery-category">
+                    <h3 class="category-title" data-i18n="tabCars">Cars</h3>
+                    <div class="horizontal-scroll">
+                        <!-- Card 1: Toyota -->
+                        <div class="vehicle-card" onclick="openDetailsModal('toyota')">
+                            <div class="vehicle-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=600&q=80" alt="Toyota Camry">
+                                <div class="vehicle-card-overlay"></div>
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="category-tag" data-i18n="toyotaCategory">Car (Sedan)</span>
+                                <h3 data-i18n="toyotaTitle">Toyota Camry</h3>
+                                <p data-i18n="toyotaDesc">Known for legendary reliability. A perfect model to learn basic engine packaging and diagnostics.</p>
+                                <div class="inspect-badge">
+                                    <span data-i18n="heroCta">Inspect Specs</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: BMW -->
+                        <div class="vehicle-card" onclick="openDetailsModal('bmw')">
+                            <div class="vehicle-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80" alt="BMW M3">
+                                <div class="vehicle-card-overlay"></div>
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="category-tag" data-i18n="bmwCategory">Car (Performance)</span>
+                                <h3 data-i18n="bmwTitle">BMW M3</h3>
+                                <p data-i18n="bmwDesc">Precision engineering. Teaches advanced multi-link suspension, turbocharging setups, and cooling cycle systems.</p>
+                                <div class="inspect-badge">
+                                    <span data-i18n="heroCta">Inspect Specs</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Mercedes -->
+                        <div class="vehicle-card" onclick="openDetailsModal('mercedes')">
+                            <div class="vehicle-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=600&q=80" alt="Mercedes C-Class">
+                                <div class="vehicle-card-overlay"></div>
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="category-tag" data-i18n="mercedesCategory">Car (Luxury)</span>
+                                <h3 data-i18n="mercedesTitle">Mercedes C-Class</h3>
+                                <p data-i18n="mercedesDesc">Complex electrical networks and premium comforts. Explores sensor modules, CAN-bus networks, and braking safety.</p>
+                                <div class="inspect-badge">
+                                    <span data-i18n="heroCta">Inspect Specs</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Chevrolet -->
+                        <div class="vehicle-card" onclick="openDetailsModal('chevrolet')">
+                            <div class="vehicle-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80" alt="Chevrolet Cobalt">
+                                <div class="vehicle-card-overlay"></div>
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="category-tag" data-i18n="chevroletCategory">Car (Economy)</span>
+                                <h3 data-i18n="chevroletTitle">Chevrolet Cobalt</h3>
+                                <p data-i18n="chevroletDesc">Straightforward packaging. Ideal for front-wheel drive suspension work, strut replacement, and steering linkages.</p>
+                                <div class="inspect-badge">
+                                    <span data-i18n="heroCta">Inspect Specs</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motorcycles Category -->
+                <div class="gallery-category">
+                    <h3 class="category-title" data-i18n="tabMotorcycles">Motorcycles</h3>
+                    <div class="horizontal-scroll">
+                        <!-- Card 5: Honda -->
+                        <div class="vehicle-card" onclick="openDetailsModal('honda')">
+                            <div class="vehicle-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=600&q=80" alt="Honda CBR600">
+                                <div class="vehicle-card-overlay"></div>
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="category-tag" data-i18n="hondaCategory">Motorcycle (Sport)</span>
+                                <h3 data-i18n="hondaTitle">Honda CBR600</h3>
+                                <p data-i18n="hondaDesc">High-revving performance inline-four engine. Perfect for understanding high-RPM valve timing and compact packaging.</p>
+                                <div class="inspect-badge">
+                                    <span data-i18n="heroCta">Inspect Specs</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 6: Yamaha -->
+                        <div class="vehicle-card" onclick="openDetailsModal('yamaha')">
+                            <div class="vehicle-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=600&q=80" alt="Yamaha MT-07">
+                                <div class="vehicle-card-overlay"></div>
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="category-tag" data-i18n="yamahaCategory">Motorcycle (Naked)</span>
+                                <h3 data-i18n="yamahaTitle">Yamaha MT-07</h3>
+                                <p data-i18n="yamahaDesc">Torque-heavy parallel-twin. Great layout for teaching clutch wire slack adjustment and radiator maintenance.</p>
+                                <div class="inspect-badge">
+                                    <span data-i18n="heroCta">Inspect Specs</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 7: Kawasaki -->
+                        <div class="vehicle-card" onclick="openDetailsModal('kawasaki')">
+                            <div class="vehicle-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1533614767277-2cf3b08e50b7?auto=format&fit=crop&w=600&q=80" alt="Kawasaki Ninja 400">
+                                <div class="vehicle-card-overlay"></div>
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="category-tag" data-i18n="kawasakiCategory">Motorcycle (Sport)</span>
+                                <h3 data-i18n="kawasakiTitle">Kawasaki Ninja 400</h3>
+                                <p data-i18n="kawasakiDesc">Extremely accessible learner motorcycle. Teaches simple chain drive setups, single-disc brakes, and light throttle systems.</p>
+                                <div class="inspect-badge">
+                                    <span data-i18n="heroCta">Inspect Specs</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 8: Suzuki -->
+                        <div class="vehicle-card" onclick="openDetailsModal('suzuki')">
+                            <div class="vehicle-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&w=600&q=80" alt="Suzuki GSX-R">
+                                <div class="vehicle-card-overlay"></div>
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="category-tag" data-i18n="suzukiCategory">Motorcycle (SuperSport)</span>
+                                <h3 data-i18n="suzukiTitle">Suzuki GSX-R</h3>
+                                <p data-i18n="suzukiDesc">The classic track weapon. Teaches fuel injection throttle body sync and dual radial-mount brake caliper servicing.</p>
+                                <div class="inspect-badge">
+                                    <span data-i18n="heroCta">Inspect Specs</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="modal" onclick="closeModalOnOutsideClick(event)">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeDetailsModal()">&times;</button>
+            <div class="modal-body">
+                <div class="modal-image-box">
+                    <img id="modal-img" src="" alt="Vehicle Image">
+                    <div class="modal-blueprint-view">
+                        <div class="blueprint-title">
+                            <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm15 15V6H6v12h12zm-3-9H9v6h6V9z"/></svg>
+                            <span>Tech Schematic View</span>
+                        </div>
+                        <div class="blueprint-grid">
+                            <div class="blueprint-line">
+                                <span>Chassis Type</span>
+                                <span id="blueprint-chassis">Monocoque</span>
+                            </div>
+                            <div class="blueprint-line">
+                                <span>Voltage System</span>
+                                <span id="blueprint-voltage">12V DC System</span>
+                            </div>
+                            <div class="blueprint-line">
+                                <span>ECU Protocol</span>
+                                <span id="blueprint-ecu">OBD-II CAN bus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-info-box">
+                    <span class="category-tag" id="modal-category">Category</span>
+                    <h2 id="modal-title">Vehicle Name</h2>
+                    <div class="modal-spec-badge" id="modal-specs">Specs details here</div>
+                    <p class="modal-description" id="modal-desc">Detailed descriptions about mechanics and engine bay properties.</p>
+                    <h4 class="modal-repairs-title">Recommended Practical Work</h4>
+                    <ul class="modal-repairs-list" id="modal-repairs">
+                        <li>Loading typical tasks...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       LEARNING LEVELS SECTION
+       ========================================== -->
+    <section id="levels" class="reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="learnTitle">Learning Paths</h2>
+                <p data-i18n="learnSubtitle">Progress from absolute beginner to master professional mechanic.</p>
+            </div>
+
+            <div class="levels-grid">
+                <!-- Level 1 -->
+                <div class="level-card">
+                    <div class="level-icon-wrapper">
+                        <!-- Safety Goggles & Tool -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/>
+                        </svg>
+                    </div>
+                    <span class="badge">Level 01</span>
+                    <h3 data-i18n="levelBeginner">Beginner</h3>
+                    <p data-i18n="levelBeginnerDesc">Master basic garage safety, fluid checks, tire replacement, and dashboard indicator lights.</p>
+                </div>
+
+                <!-- Level 2 -->
+                <div class="level-card">
+                    <div class="level-icon-wrapper">
+                        <!-- Micrometer / Caliper -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.3C.5 6.7.9 9.8 2.9 11.8c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.6z"/>
+                        </svg>
+                    </div>
+                    <span class="badge">Level 02</span>
+                    <h3 data-i18n="levelIntermediate">Intermediate</h3>
+                    <p data-i18n="levelIntermediateDesc">Learn brake pad replacement, suspension diagnostics, spark plug tuning, and battery servicing.</p>
+                </div>
+
+                <!-- Level 3 -->
+                <div class="level-card">
+                    <div class="level-icon-wrapper">
+                        <!-- Engine Block / Microchip -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                        </svg>
+                    </div>
+                    <span class="badge">Level 03</span>
+                    <h3 data-i18n="levelProfessional">Professional</h3>
+                    <p data-i18n="levelProfessionalDesc">Dive deep into engine rebuilds, electronic control unit (ECU) coding, and advanced electrical wiring.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       VIDEO LESSONS (YOUTUBE EMBEDS)
+       ========================================== -->
+    <section id="videos" class="reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="videoTitle">Tutorial Videos</h2>
+                <p data-i18n="videoSubtitle">Step-by-step visual guides on standard maintenance procedures.</p>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-btn active" onclick="filterVideos('all')">All</button>
+                <button class="filter-btn" onclick="filterVideos('car')" data-i18n="tabCars">Cars</button>
+                <button class="filter-btn" onclick="filterVideos('moto')" data-i18n="tabMotorcycles">Motorcycles</button>
+            </div>
+
+            <div class="videos-grid">
+                <!-- Video 1: Car Oil Change -->
+                <div class="video-card" data-category="car">
+                    <div class="video-embed-wrapper">
+                        <iframe src="https://www.youtube.com/embed/O1hF25Cowv8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-category" data-i18n="tabCars">Cars</span>
+                        <h3 data-i18n="video1Title">How to Change Your Engine Oil (Complete Guide)</h3>
+                    </div>
+                </div>
+
+                <!-- Video 2: Car Brake pads -->
+                <div class="video-card" data-category="car">
+                    <div class="video-embed-wrapper">
+                        <iframe src="https://www.youtube.com/embed/ZwD4M99T7vQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-category" data-i18n="tabCars">Cars</span>
+                        <h3 data-i18n="video2Title">Brake Pad & Rotor Replacement Tutorial</h3>
+                    </div>
+                </div>
+
+                <!-- Video 3: Car Check Engine -->
+                <div class="video-card" data-category="car">
+                    <div class="video-embed-wrapper">
+                        <iframe src="https://www.youtube.com/embed/MhB3tW2cEic" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-category" data-i18n="tabCars">Cars</span>
+                        <h3 data-i18n="video3Title">Diagnosing a Flashing Check Engine Light</h3>
+                    </div>
+                </div>
+
+                <!-- Video 4: Moto Chain -->
+                <div class="video-card" data-category="moto">
+                    <div class="video-embed-wrapper">
+                        <iframe src="https://www.youtube.com/embed/n4sH_k-D_B0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-category" data-i18n="tabMotorcycles">Motorcycles</span>
+                        <h3 data-i18n="video4Title">Motorcycle Chain Adjustment & Lubrication</h3>
+                    </div>
+                </div>
+
+                <!-- Video 5: Moto Carburetor -->
+                <div class="video-card" data-category="moto">
+                    <div class="video-embed-wrapper">
+                        <iframe src="https://www.youtube.com/embed/H7c2T7g0T18" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-category" data-i18n="tabMotorcycles">Motorcycles</span>
+                        <h3 data-i18n="video5Title">How to Clean a Motorcycle Carburetor</h3>
+                    </div>
+                </div>
+
+                <!-- Video 6: Moto Spark plug -->
+                <div class="video-card" data-category="moto">
+                    <div class="video-embed-wrapper">
+                        <iframe src="https://www.youtube.com/embed/1kAd5f15X_E" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-category" data-i18n="tabMotorcycles">Motorcycles</span>
+                        <h3 data-i18n="video6Title">Replacing a Motorcycle Spark Plug & Ignition Coil</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       REPAIR GUIDES SECTION
+       ========================================== -->
+    <section id="guides" class="reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="guidesTitle">Illustrated Repair Manuals</h2>
+                <p data-i18n="guidesSubtitle">Follow our highly detailed walkthroughs for manual hand-on repairs.</p>
+            </div>
+
+            <div class="guide-selection-box">
+                <span data-i18n="guideSelectLabel">Choose a Guide:</span>
+                <select class="guide-select" id="guide-select" onchange="loadSelectedGuide()">
+                    <option value="1" data-i18n="guide1Name">Guide 1: Changing a Car Wheel/Tire</option>
+                    <option value="2" data-i18n="guide2Name">Guide 2: Motorcycle Chain Maintenance</option>
+                </select>
+            </div>
+
+            <div class="guide-slider-container">
+                <!-- Progress Line Nodes -->
+                <div class="guide-steps-progress">
+                    <div class="guide-progress-bar-bg"></div>
+                    <div class="guide-progress-bar-fill" id="guide-progress-fill"></div>
+                    <div class="guide-step-node active" onclick="jumpToGuideStep(0)">1</div>
+                    <div class="guide-step-node" onclick="jumpToGuideStep(1)">2</div>
+                    <div class="guide-step-node" onclick="jumpToGuideStep(2)">3</div>
+                    <div class="guide-step-node" onclick="jumpToGuideStep(3)">4</div>
+                    <div class="guide-step-node" onclick="jumpToGuideStep(4)">5</div>
+                </div>
+
+                <!-- Active Slide Window -->
+                <div class="guide-slide" id="guide-slide">
+                    <div class="guide-slide-content">
+                        <h3 id="guide-step-title">1. Safety & Positioning</h3>
+                        <p id="guide-step-text">Park the vehicle on flat ground, engage the handbrake/parking brake, and place wheel chocks behind the opposite tires.</p>
+                    </div>
+                    <div class="guide-slide-graphic">
+                        <img id="guide-step-img" src="https://images.unsplash.com/photo-1507136566006-cfc505b114fc?auto=format&fit=crop&w=600&q=80" alt="Guide step illustration">
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="guide-nav-buttons">
+                    <button class="btn" id="guide-prev-btn" onclick="adjustGuideStep(-1)" disabled>&larr;</button>
+                    <button class="btn" id="guide-next-btn" onclick="adjustGuideStep(1)">&rarr;</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       DIAGNOSTIC SCANNER QUIZ SECTION
+       ========================================== -->
+    <section id="quiz" class="reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="quizTitle">Diagnostic Mechanic Quiz</h2>
+                <p data-i18n="quizSubtitle">Test your mechanical IQ. Can you identify the correct troubleshooting procedures?</p>
+            </div>
+
+            <div class="quiz-wrapper">
+                <!-- OBD-II Scanner Frame Header -->
+                <div class="quiz-scanner-header">
+                    <div>SYSTEM: <span class="scanner-logo-text">OBD-II SCANNER v4.1</span></div>
+                    <div class="scanner-status">
+                        <div class="status-dot"></div>
+                        <span>LINK ONLINE</span>
+                    </div>
+                </div>
+
+                <!-- Scanner Digital Screen -->
+                <div class="quiz-screen">
+                    <!-- Start State -->
+                    <div class="quiz-screen-start" id="quiz-start-screen">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <p data-i18n="quizSubtitle">Test your mechanical IQ. Can you identify the correct troubleshooting procedures?</p>
+                        <button class="btn" onclick="startQuiz()" data-i18n="quizStart">Start Quiz</button>
+                    </div>
+
+                    <!-- Question State -->
+                    <div class="quiz-question-box" id="quiz-question-box">
+                        <div class="quiz-question-meta">
+                            <span class="quiz-question-number" id="quiz-current-question-num">DTC 01/05:</span>
+                            <span class="quiz-progress-text" id="quiz-progress-txt">0% COMPLETE</span>
+                        </div>
+                        <div class="quiz-question-text" id="quiz-question-txt">Loading question prompt here...</div>
+                        <div class="quiz-options-list" id="quiz-options">
+                            <!-- Populated by Javascript -->
+                        </div>
+                        <div class="quiz-navigation">
+                            <button class="btn" id="quiz-next-btn" onclick="nextQuizQuestion()" data-i18n="quizNext">Next Question</button>
+                        </div>
+                    </div>
+
+                    <!-- Results State -->
+                    <div class="quiz-screen-results" id="quiz-results-screen">
+                        <h3 data-i18n="quizResults">Your Results</h3>
+                        <div class="score-circle-wrapper">
+                            <svg class="score-svg">
+                                <circle class="score-svg-circle-bg" cx="75" cy="75" r="70"></circle>
+                                <circle class="score-svg-circle-fill" id="score-circle" cx="75" cy="75" r="70"></circle>
+                            </svg>
+                            <span class="score-text" id="score-text">0/5</span>
+                        </div>
+                        <div class="rank-label" id="rank-label">Rank: Apprentice</div>
+                        <p class="rank-advice" id="rank-advice">Keep studying engine bay layouts and standard guides to improve your repair techniques.</p>
+                        <button class="btn" onclick="restartQuiz()" data-i18n="quizRetry">Try Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       FOOTER
+       ========================================== -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">
+                    <svg viewBox="0 0 100 100">
+                        <path d="M50 15c-19.3 0-35 15.7-35 35s15.7 35 35 35 35-15.7 35-35-15.7-35-35-35zm0 60c-13.8 0-25-11.2-25-25s11.2-25 25-25 25 11.2 25 25-11.2 25-25 25z"/>
+                        <path d="M50 35c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15zm0 20c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z"/>
+                        <path d="M78.6 21.4c-1-1-2.6-1-3.6 0L57.5 38.9c-1-2.5-3-4.5-5.5-5.5l17.5-17.5c1-1 1-2.6 0-3.6s-2.6-1-3.6 0L48.4 29.8c-.9-.2-1.9-.3-2.9-.3-1.9 0-3.8.4-5.5 1.2L24.4 15c-1-1-2.6-1-3.6 0s-1 2.6 0 3.6l15.7 15.7c-.8 1.7-1.2 3.6-1.2 5.5 0 1 .1 2 .3 2.9L19.9 58.4c-1 1-1 2.6 0 3.6s2.6 1 3.6 0l17.5-17.5c2.5 1 4.5 3 5.5 5.5L29 67.5c-1 1-1 2.6 0 3.6s2.6 1 3.6 0L48.3 55.4c.9.2 1.9.3 2.9.3 1.9 0 3.8-.4 5.5-1.2L72.4 70.2c1 1 2.6 1 3.6 0s1-2.6 0-3.6L60.3 50.9c.8-1.7 1.2-3.6 1.2-5.5 0-1-.1-2-.3-2.9l17.4-17.4c1.1-1 1.1-2.7 0-3.7z"/>
+                    </svg>
+                    <div class="logo-text">Gear<span>Head</span></div>
+                </div>
+                <p data-i18n="footerText">Automotive & Motorcycle Repair Academy. Built for gearheads and future mechanics.</p>
+                <div class="social-row">
+                    <div class="social-btn">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </div>
+                    <div class="social-btn">
+                        <svg viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                    </div>
+                    <div class="social-btn">
+                        <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4 data-i18n="navLevels">Levels</h4>
+                <ul class="footer-links">
+                    <li><a href="#levels" data-i18n="levelBeginner">Beginner</a></li>
+                    <li><a href="#levels" data-i18n="levelIntermediate">Intermediate</a></li>
+                    <li><a href="#levels" data-i18n="levelProfessional">Professional</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 data-i18n="navGuides">Guides</h4>
+                <ul class="footer-links">
+                    <li><a href="#guides" data-i18n="guide1Name">Changing a Car Wheel</a></li>
+                    <li><a href="#guides" data-i18n="guide2Name">Moto Chain Maintenance</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 data-i18n="navQuiz">Quiz</h4>
+                <ul class="footer-links">
+                    <li><a href="#quiz" data-i18n="quizTitle">Diagnostic Test</a></li>
+                    <li><a href="#quiz" data-i18n="quizStart">Start Scanner</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>&copy; 2026 GearHead Academy. All rights reserved.</div>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ==========================================
+       JAVASCRIPT FUNCTIONALITY
+       ========================================== -->
+    <script>
+        /* ==========================================
+           1. TRANSLATION DICTIONARY
+           ========================================== */
+        const translations = {
+            en: {
+                navHome: "Home",
+                navGallery: "Gallery",
+                navLevels: "Levels",
+                navVideos: "Videos",
+                navGuides: "Guides",
+                navQuiz: "Quiz",
+                heroTitle: "Master Auto & <span>Moto Repair</span>",
+                heroSubtitle: "Your ultimate industrial garage for learning mechanics and servicing vehicles.",
+                heroCta: "Start Learning",
+                galleryTitle: "Vehicle <span>Showroom & Specs</span>",
+                gallerySubtitle: "Select a vehicle to inspect its technical blueprint and typical repairs.",
+                tabCars: "Cars",
+                tabMotorcycles: "Motorcycles",
+                learnTitle: "Learning <span>Paths</span>",
+                learnSubtitle: "Progress from absolute beginner to master professional mechanic.",
+                levelBeginner: "Beginner",
+                levelIntermediate: "Intermediate",
+                levelProfessional: "Professional",
+                levelBeginnerDesc: "Master basic garage safety, fluid checks, tire replacement, and dashboard indicator lights.",
+                levelIntermediateDesc: "Learn brake pad replacement, suspension diagnostics, spark plug tuning, and battery servicing.",
+                levelProfessionalDesc: "Dive deep into engine rebuilds, electronic control unit (ECU) coding, and advanced electrical wiring.",
+                videoTitle: "Tutorial <span>Videos</span>",
+                videoSubtitle: "Step-by-step visual guides on standard maintenance procedures.",
+                guidesTitle: "Illustrated <span>Repair Manuals</span>",
+                guidesSubtitle: "Follow our highly detailed walkthroughs for manual hand-on repairs.",
+                guideSelectLabel: "Choose a Guide:",
+                guide1Name: "Guide 1: Changing a Car Wheel/Tire",
+                guide2Name: "Guide 2: Motorcycle Chain Maintenance",
+                guide1Step1Title: "1. Safety & Positioning",
+                guide1Step1Text: "Park the vehicle on flat ground, engage the handbrake/parking brake, and place wheel chocks behind the opposite tires.",
+                guide1Step2Title: "2. Loosen Lug Nuts",
+                guide1Step2Text: "Use the lug wrench to loosen the lug nuts on the flat tire by about a half-turn. Do NOT remove them yet.",
+                guide1Step3Title: "3. Jack Up the Car",
+                guide1Step3Text: "Place the jack under the vehicle's designated pinch weld frame point. Raise the car until the tire is about 6 inches off the ground.",
+                guide1Step4Title: "4. Swap the Wheel",
+                guide1Step4Text: "Remove the lug nuts completely, pull off the flat tire, mount the spare wheel, and hand-tighten the lug nuts.",
+                guide1Step5Title: "5. Lower & Torque",
+                guide1Step5Text: "Lower the car slowly until the tire touches the ground but doesn't bear full weight. Tighten the nuts in a star pattern to full torque.",
+                guide2Step1Title: "1. Elevate & Inspect",
+                guide2Step1Text: "Place the motorcycle on a center stand or rear paddock stand. Rotate the wheel and inspect chain wear and play.",
+                guide2Step2Title: "2. Clean the Chain",
+                guide2Step2Text: "Spray dedicated motorcycle chain cleaner. Use a three-sided chain brush to scrub off dirt, grime, and old grease.",
+                guide2Step3Title: "3. Wipe & Dry",
+                guide2Step3Text: "Wipe down the chain with a clean rag to remove all dissolved residue. Let it dry completely before applying lube.",
+                guide2Step4Title: "4. Adjust Tension",
+                guide2Step4Text: "Loosen the rear axle nut. Turn the adjuster bolts equally on both sides to achieve 30-40mm of slack, then tighten the axle nut.",
+                guide2Step5Title: "5. Apply Lubricant",
+                guide2Step5Text: "Slowly spin the wheel and spray chain lube evenly on the inside run of the chain. Let it dry for 15 minutes before riding.",
+                quizTitle: "Diagnostic <span>Mechanic Quiz</span>",
+                quizSubtitle: "Test your mechanical IQ. Can you identify the correct troubleshooting procedures?",
+                quizStart: "Start Quiz",
+                quizNext: "Next Question",
+                quizRetry: "Try Again",
+                quizResults: "Your Results",
+                footerText: "Automotive & Motorcycle Repair Academy. Built for gearheads and future mechanics.",
+                
+                // Vehicles data
+                toyotaTitle: "Toyota Camry",
+                toyotaCategory: "Car (Sedan)",
+                toyotaDesc: "Known for legendary reliability. A perfect model to learn basic engine packaging and diagnostics.",
+                toyotaSpecs: "Engine: 2.5L 4-Cylinder | Power: 203 HP | Drive: FWD",
+                toyotaRepairs: "1. Fluid checks (easy transmission fluid stick access).; 2. Alternator replacement.; 3. Cabin and engine air filter swap.",
+                
+                bmwTitle: "BMW M3",
+                bmwCategory: "Car (Performance)",
+                bmwDesc: "Precision engineering. Teaches advanced multi-link suspension, turbocharging setups, and cooling cycle systems.",
+                bmwSpecs: "Engine: 3.0L Twin-Turbo I6 | Power: 473 HP | Drive: RWD",
+                bmwRepairs: "1. Valve cover gasket leakage fixes.; 2. High pressure fuel pump (HPFP) swaps.; 3. Cooling system overhaul.",
+                
+                mercedesTitle: "Mercedes C-Class",
+                mercedesCategory: "Car (Luxury)",
+                mercedesDesc: "Complex electrical networks and premium comforts. Explores sensor modules, CAN-bus networks, and braking safety.",
+                mercedesSpecs: "Engine: 2.0L Turbo 4-Cyl + Mild Hybrid | Power: 255 HP | Drive: RWD/AWD",
+                mercedesRepairs: "1. Brake rotor and electronic sensor pad replacements.; 2. Aux battery replacement.; 3. Auxiliary water pump diagnostics.",
+                
+                chevroletTitle: "Chevrolet Cobalt",
+                chevroletCategory: "Car (Economy)",
+                chevroletDesc: "Straightforward packaging. Ideal for front-wheel drive suspension work, strut replacement, and steering linkages.",
+                chevroletSpecs: "Engine: 1.5L 4-Cylinder | Power: 105 HP | Drive: FWD",
+                chevroletRepairs: "1. Front strut assembly replacement.; 2. Oxygen (O2) sensor replacement.; 3. Ignition coil pack servicing.",
+                
+                hondaTitle: "Honda CBR600",
+                hondaCategory: "Motorcycle (Sport)",
+                hondaDesc: "High-revving performance inline-four engine. Perfect for understanding high-RPM valve timing and compact packaging.",
+                hondaSpecs: "Engine: 599cc Inline-4 | Power: 113 HP | Weight: 194 kg",
+                hondaRepairs: "1. Spark plug changes (tight clearances).; 2. Chain adjustment and tension check.; 3. Fork oil seal replacement.",
+                
+                yamahaTitle: "Yamaha MT-07",
+                yamahaCategory: "Motorcycle (Naked)",
+                yamahaDesc: "Torque-heavy parallel-twin. Great layout for teaching clutch wire slack adjustment and radiator maintenance.",
+                yamahaSpecs: "Engine: 689cc Parallel-Twin | Power: 74 HP | Weight: 184 kg",
+                yamahaRepairs: "1. Clutch cable slack adjustment.; 2. Oil & filter swap.; 3. Rear sprocket inspection & cleaning.",
+                
+                kawasakiTitle: "Kawasaki Ninja 400",
+                kawasakiCategory: "Motorcycle (Sport)",
+                kawasakiDesc: "Extremely accessible learner motorcycle. Teaches simple chain drive setups, single-disc brakes, and light throttle systems.",
+                kawasakiSpecs: "Engine: 399cc Parallel-Twin | Power: 49 HP | Weight: 168 kg",
+                kawasakiRepairs: "1. Front brake pad swap.; 2. Coolant bleed & refill.; 3. Throttle cable lubrication.",
+                
+                suzukiTitle: "Suzuki GSX-R",
+                suzukiCategory: "Motorcycle (SuperSport)",
+                suzukiDesc: "The classic track weapon. Teaches fuel injection throttle body sync and dual radial-mount brake caliper servicing.",
+                suzukiSpecs: "Engine: 750cc Inline-4 | Power: 148 HP | Weight: 190 kg",
+                suzukiRepairs: "1. Battery terminal cleanup & swap.; 2. Radial brake caliper rebuild.; 3. Airbox and velocity stack cleaning.",
+
+                // Video titles
+                video1Title: "How to Change Your Engine Oil (Complete Guide)",
+                video2Title: "Brake Pad & Rotor Replacement Tutorial",
+                video3Title: "Diagnosing a Flashing Check Engine Light",
+                video4Title: "Motorcycle Chain Adjustment & Lubrication",
+                video5Title: "How to Clean a Motorcycle Carburetor",
+                video6Title: "Replacing a Motorcycle Spark Plug & Ignition Coil",
+
+                // Quiz Questions
+                q1Question: "What color is typical engine oil when it is fresh and clean?",
+                q1OptA: "Dark black / silver metallic",
+                q1OptB: "Clear amber / golden yellow",
+                q1OptC: "Bright cherry red",
+                q1OptD: "Milky white / light beige",
+                
+                q2Question: "What is the primary purpose of a spark plug in an engine?",
+                q2OptA: "To pump pressurized fuel directly into the combustion chamber",
+                q2OptB: "To ignite the compressed fuel-air mixture via an electric spark",
+                q2OptC: "To cool down the cylinder walls during high RPM operations",
+                q2OptD: "To charge the auxiliary 12V battery system while driving",
+
+                q3Question: "How often should you check and adjust motorcycle chain tension?",
+                q3OptA: "Once a year or every 10,000 kilometers",
+                q3OptB: "Every 500 to 1,000 kilometers (and after riding in heavy rain)",
+                q3OptC: "Only when the chain starts rattling or slips off the sprocket",
+                q3OptD: "Every time you replace the front and rear tires",
+
+                q4Question: "What does a FLASHING 'Check Engine' (MIL) light usually mean?",
+                q4OptA: "Your windshield washer fluid is extremely low and needs topping up",
+                q4OptB: "A severe engine misfire is occurring, which can ruin the catalytic converter",
+                q4OptC: "The car's media display requires a software update over-the-air",
+                q4OptD: "Standard scheduled oil maintenance is due within 100 kilometers",
+
+                q5Question: "Which tool should be used to tighten engine head bolts to exact factory specs?",
+                q5OptA: "A high-torque pneumatic impact gun",
+                q5OptB: "A calibrated click-type torque wrench",
+                q5OptC: "An adjustable pipe wrench (Crescent wrench)",
+                q5OptD: "Heavy-duty locking slip-joint pliers",
+
+                quizScoreText: "You scored {score} out of 5!",
+                quizRankMechanic: "Rank: Master Diagnostic Mechanic! Outstanding knowledge.",
+                quizRankApprentice: "Rank: Apprentice Garage Hand. Good effort, keep learning!",
+                quizRankNovice: "Rank: Backyard Tinkerer. We recommend reviewing the learning levels!"
+            },
+            uz: {
+                navHome: "Bosh sahifa",
+                navGallery: "Galereya",
+                navLevels: "Bosqichlar",
+                navVideos: "Videolar",
+                navGuides: "Qo'llanmalar",
+                navQuiz: "Test",
+                heroTitle: "Avto va Moto <span>Ta'mirlashni O'rganing</span>",
+                heroSubtitle: "Mexanikani o'rganish va transport vositalariga xizmat ko'rsatish bo'yicha sizning asosiy interaktiv garajingiz.",
+                heroCta: "O'rganishni boshlash",
+                galleryTitle: "Transport <span>Galereyasi va Texnik Tavsiflar</span>",
+                gallerySubtitle: "Texnik chizmalar va odatiy ta'mirlash ishlarini ko'rish uchun transport vositasini tanlang.",
+                tabCars: "Avtomobillar",
+                tabMotorcycles: "Mototsikllar",
+                learnTitle: "O'rganish <span>Bosqichlari</span>",
+                learnSubtitle: "Mutlaqo boshlovchidan to sertifikatlangan usta mexanikgacha bo'lgan yo'l.",
+                levelBeginner: "Boshlang'ich",
+                levelIntermediate: "O'rta",
+                levelProfessional: "Professional",
+                levelBeginnerDesc: "Garajdagi asosiy xavfsizlik, suyuqliklarni tekshirish, shinani almashtirish va asboblar paneli belgilarini o'rganing.",
+                levelIntermediateDesc: "Tormoz prokladkalarini almashtirish, osma tizim diagnostikasi, shamchalarni sozlash va akkumulyatorga xizmat ko'rsatishni o'rganing.",
+                levelProfessionalDesc: "Dvigatelni to'liq ta'mirlash, elektron boshqaruv bloki (ECU) kodlash va murakkab elektr simlarini ulashga kirishing.",
+                videoTitle: "Video <span>Darslar</span>",
+                videoSubtitle: "Standart texnik xizmat ko'rsatish jarayonlari bo'yicha bosqichma-bosqich ko'rsatmalar.",
+                guidesTitle: "Tasvirlangan <span>Qo'llanmalar</span>",
+                guidesSubtitle: "Mustaqil ravishda qo'lda ta'mirlash uchun batafsil yo'riqnomalarimizga amal qiling.",
+                guideSelectLabel: "Qo'llanmani tanlang:",
+                guide1Name: "1-qo'llanma: Avtomobil g'ildiragini almashtirish",
+                guide2Name: "2-qo'llanma: Mototsikl zanjiriga texnik xizmat ko'rsatish",
+                guide1Step1Title: "1. Xavfsizlik va joylashuv",
+                guide1Step1Text: "Mashinani tekis joyga qo'ying, qo'l tormozini torting va qarama-qarshi g'ildiraklar tagiga tirgaklar qo'ying.",
+                guide1Step2Title: "2. Boltlar/gaykalarni bo'shatish",
+                guide1Step2Text: "G'ildirak kaliti yordamida shinadagi gaykalarni taxminan yarim burilishga bo'shating. Ularni hali yechmang.",
+                guide1Step3Title: "3. Domkrat yordamida ko'tarish",
+                guide1Step3Text: "Domkratni avtomobilning belgilangan qismiga qo'ying. Shinani erdan 15 sm balandlikka ko'taring.",
+                guide1Step4Title: "4. G'ildirakni almashtirish",
+                guide1Step4Text: "Gaykalarni to'liq yechib oling, g'ildirakni chiqarib oling, zaxira g'ildirakni o'rnating va gaykalarni qo'l bilan qotiring.",
+                guide1Step5Title: "5. Tushirish va qotirish",
+                guide1Step5Text: "Mashinani sekin tushiring, shunda g'ildirak erga tegadi. Gaykalarni yulduzcha tartibida to'liq kuch bilan qotiring.",
+                guide2Step1Title: "1. Ko'tarish va ko'zdan kechirish",
+                guide2Step1Text: "Mototsiklni markaziy tayanchga yoki orqa podkatga qo'ying. G'ildirakni aylantirib, zanjir tarangligi va holatini tekshiring.",
+                guide2Step2Title: "2. Zanjirni tozalash",
+                guide2Step2Text: "Zanjir tozalovchi sprey seping. Uch tomonlama cho'tka yordamida loy va eski moy qoldiqlarini tozalang.",
+                guide2Step3Title: "3. Quritish",
+                guide2Step3Text: "Zanjirni toza latta bilan artib oling. Yangi moy surtishdan oldin uning to'liq qurishini kuting.",
+                guide2Step4Title: "4. Taranglikni sozlash",
+                guide2Step4Text: "Orqa o'q gaykasini bo'shating. Ikkala tomondagi sozlash boltlarini bir xilda burab, 30-40mm bo'shliq hosil qiling, so'ng o'qni qotiring.",
+                guide2Step5Title: "5. Moylash",
+                guide2Step5Text: "G'ildirakni sekin aylantirib, zanjirning ichki qismiga maxsus moy spreyini seping. Haydashdan oldin 15 daqiqa kuting.",
+                quizTitle: "Mexanik <span>Diagnostika Testi</span>",
+                quizSubtitle: "Texnik IQ darajangizni tekshiring. Muammolarni to'g'ri aniqlay olasizmi?",
+                quizStart: "Testni boshlash",
+                quizNext: "Keyingi savol",
+                quizRetry: "Qayta urinish",
+                quizResults: "Natijangiz",
+                footerText: "Avto va Moto ta'mirlash akademiyasi. Texnika ixlosmandlari va kelajak mexaniklari uchun yaratilgan.",
+                
+                // Vehicles data
+                toyotaTitle: "Toyota Camry",
+                toyotaCategory: "Avtomobil (Sedan)",
+                toyotaDesc: "Afsonaviy ishonchliligi bilan tanilgan. Dvigatelning asosiy tuzilishi va diagnostikasini o'rganish uchun ajoyib namuna.",
+                toyotaSpecs: "Dvigatel: 2.5L 4-Silindr | Quvvat: 203 ot kuchi | Uzatma: FWD (Oldi)",
+                toyotaRepairs: "1. Suyuqliklarni tekshirish (uzatmalar qutisi shupiga qulay kirish).; 2. Generatorni almashtirish.; 3. Havo filtrlarini yangilash.",
+                
+                bmwTitle: "BMW M3",
+                bmwCategory: "Avtomobil (Sport)",
+                bmwDesc: "Yuqori aniqlikdagi muhandislik. Murakkab osma tizim, turbodvigatel va sovutish tizimlarini o'rgatadi.",
+                bmwSpecs: "Dvigatel: 3.0L Twin-Turbo I6 | Quvvat: 473 ot kuchi | Uzatma: RWD (Orqa)",
+                bmwRepairs: "1. Klapan qopqog'i qistirmasi oqishini bartaraf etish.; 2. Yuqori bosimli yonilg'i nasosini almashtirish.; 3. Sovutish tizimini yangilash.",
+                
+                mercedesTitle: "Mercedes C-Class",
+                mercedesCategory: "Avtomobil (Lyuks)",
+                mercedesDesc: "Murakkab elektr tarmoqlari va premium qulayliklar. Datchik modullari, CAN-shina va tormoz xavfsizligini o'rganish.",
+                mercedesSpecs: "Dvigatel: 2.0L Turbo 4-Sil + Gibrid | Quvvat: 255 ot kuchi | Uzatma: RWD/AWD",
+                mercedesRepairs: "1. Tormoz diski va datchikli prokladkalarni almashtirish.; 2. Qo'shimcha akkumulyatorni almashtirish.; 3. Nasos diagnostikasi.",
+                
+                chevroletTitle: "Chevrolet Cobalt",
+                chevroletCategory: "Avtomobil (Ekonom)",
+                chevroletDesc: "Oddiy va tushunarli tuzilish. Old osma tizim, amortizatorlar va rul tyagalarini ta'mirlash uchun qulay.",
+                chevroletSpecs: "Dvigatel: 1.5L 4-Silindr | Quvvat: 105 ot kuchi | Uzatma: FWD (Oldi)",
+                chevroletRepairs: "1. Front amortizator ustunini yig'ma almashtirish.; 2. Kislorod datchigini (lyambda) almashtirish.; 3. O't oldirish g'altagini almashtirish.",
+                
+                hondaTitle: "Honda CBR600",
+                hondaCategory: "Mototsikl (Sport)",
+                hondaDesc: "Yuqori aylanadigan qatorli to'rt silindrli dvigatel. Yuqori RPM valf vaqtini va ixcham joylashuvni tushunish.",
+                hondaSpecs: "Dvigatel: 599cc Inline-4 | Quvvat: 113 ot kuchi | Og'irligi: 194 kg",
+                hondaRepairs: "1. Shamchalarni almashtirish (tor joyda).; 2. Zanjir tarangligini tekshirish va sozlash.; 3. Vilka salniklarini almashtirish.",
+                
+                yamahaTitle: "Yamaha MT-07",
+                yamahaCategory: "Mototsikl (Naked)",
+                yamahaDesc: "Kuchli aylanma momentga ega ikki silindrli motor. Mufta trosini sozlash va radiator xizmatini o'rganish uchun qulay.",
+                yamahaSpecs: "Dvigatel: 689cc Parallel-Twin | Quvvat: 74 ot kuchi | Og'irligi: 184 kg",
+                yamahaRepairs: "1. Mufta trosi bo'shlig'ini sozlash.; 2. Moy va filtrni almashtirish.; 3. Orqa yulduzchani tozalash va tekshirish.",
+                
+                kawasakiTitle: "Kawasaki Ninja 400",
+                kawasakiCategory: "Mototsikl (Sport)",
+                kawasakiDesc: "Boshlovchilar uchun juda qulay mototsikl. Zanjirli uzatma va oddiy tormoz tizimi ishlashini o'rgatadi.",
+                kawasakiSpecs: "Dvigatel: 399cc Parallel-Twin | Quvvat: 49 ot kuchi | Og'irligi: 168 kg",
+                kawasakiRepairs: "1. Old tormoz prokladkasini almashtirish.; 2. Sovutish suyuqligini yangilash.; 3. Gaz trosini moylash.",
+                
+                suzukiTitle: "Suzuki GSX-R",
+                suzukiCategory: "Mototsikl (SuperSport)",
+                suzukiDesc: "Klassik trek mototsikli. Drossel klapanlarini sinxronlash va radial tormoz supportlarini ta'mirlashni o'rganini.",
+                suzukiSpecs: "Dvigatel: 750cc Inline-4 | Quvvat: 148 ot kuchi | Og'irligi: 190 kg",
+                suzukiRepairs: "1. Akkumulyator klemma tozalash va almashtirish.; 2. Radial tormoz supportini qayta yig'ish.; 3. Havo qutisini tozalash.",
+
+                video1Title: "Dvigatel moyini almashtirish (To'liq qo'llanma)",
+                video2Title: "Tormoz prokladkasi va diskini almashtirish",
+                video3Title: "Check Engine chirog'i miltillashini aniqlash",
+                video4Title: "Mototsikl zanjirini sozlash va moylash",
+                video5Title: "Mototsikl karbyuratorini tozalash",
+                video6Title: "Mototsikl shamchasi va o't oldirish g'altagini almashtirish",
+
+                q1Question: "Yangi va toza motor moyi odatda qanday rangda bo'ladi?",
+                q1OptA: "To'q qora / yaltiroq kumushrang",
+                q1OptB: "Shaffof sarg'ish / oltinrang",
+                q1OptC: "Yorqin olchali qizil",
+                q1OptD: "Sutdek oq / och sarg'ish",
+                
+                q2Question: "Dvigatelda shamchaning (spark plug) asosiy vazifasi nima?",
+                q2OptA: "Yonilg'ini silindrga yuqori bosim ostida purkash",
+                q2OptB: "Siqilgan yonilg'i-havo aralashmasini elektr uchquni bilan yoqish",
+                q2OptC: "Yuqori RPMlarda silindr devorlarini sovutish",
+                q2OptD: "Harakat vaqtida qo'shimcha 12V akkumulyatorni zaryadlash",
+
+                q3Question: "Mototsikl zanjiri tarangligi va moylanishini qanchalik tez-tez tekshirish kerak?",
+                q3OptA: "Yiliga bir marta yoki har 10 000 kilometrda",
+                q3OptB: "Har 500-1000 kilometrda (va kuchli yomg'irdan keyin)",
+                q3OptC: "Faqat zanjir shovqin chiqara boshlaganda yoki tishdan chiqib ketganda",
+                q3OptD: "Har safar shinalarni almashtirganda",
+
+                q4Question: "MIL (Check Engine) chirog'i MILTILLAB yonsa, bu nimani anglatadi?",
+                q4OptA: "Oyna yuvish suyuqligi juda kamayib ketgan",
+                q4OptB: "Dvigatelda jiddiy o't olmay qolish (misfire) yuz beryapti, katalizator buzilishi mumkin",
+                q4OptC: "Mashina displeyi dasturiy ta'minotni yangilashni talab qilmoqda",
+                q4OptD: "Navbatdagi moy almashtirish muddati kelgan (100 kmdan keyin)",
+
+                q5Question: "Dvigatel kallagi boltlarini zavod ko'rsatgan aniq kuch bilan qotirish uchun qaysi asbob ishlatiladi?",
+                q5OptA: "Yuqori quvvatli pnevmatik gaykabo'shatgich",
+                q5OptB: "Kalibrlangan dinamometrik kalit (torque wrench)",
+                q5OptC: "Universal sozlanadigan kalit (shved kaliti)",
+                q5OptD: "Og'ir yuk uchun mo'ljallangan qisqichli ombir",
+
+                quizScoreText: "Siz 5 tadan {score} ball to'pladingiz!",
+                quizRankMechanic: "Daraja: Usta mexanik-diagnost! Ajoyib bilim.",
+                quizRankApprentice: "Daraja: Garaj shogirdi. Yaxshi urinish, o'rganishda davom eting!",
+                quizRankNovice: "Daraja: Uy mexanigi. Darslarimizni qayta ko'rib chiqishni maslahat beramiz!"
+            },
+            ru: {
+                navHome: "Главная",
+                navGallery: "Галерея",
+                navLevels: "Уровни",
+                navVideos: "Видео",
+                navGuides: "Руководства",
+                navQuiz: "Тест",
+                heroTitle: "Освойте ремонт <span>Авто и Мото</span>",
+                heroSubtitle: "Ваш главный интерактивный гараж для изучения автомеханики и обслуживания техники.",
+                heroCta: "Начать обучение",
+                galleryTitle: "Шоурум техники и <span>характеристики</span>",
+                gallerySubtitle: "Выберите транспортное средство для просмотра его технических чертежей и основных видов ремонта.",
+                tabCars: "Автомобили",
+                tabMotorcycles: "Мотоциклы",
+                learnTitle: "Пути <span>обучения</span>",
+                learnSubtitle: "Пройдите путь от абсолютного новичка до сертифицированного мастера-механика.",
+                levelBeginner: "Новичок",
+                levelIntermediate: "Средний",
+                levelProfessional: "Профессионал",
+                levelBeginnerDesc: "Освойте базовую безопасность в гараже, проверку рабочих жидкостей, замену колес и индикаторы приборной панели.",
+                levelIntermediateDesc: "Изучите замену тормозных колодок, диагностику подвески, обслуживание свечей зажигания и аккумулятора.",
+                levelProfessionalDesc: "Погрузитесь в капитальный ремонт двигателей, кодирование ЭБУ (ECU) и сложную электропроводку.",
+                videoTitle: "Видео <span>уроки</span>",
+                videoSubtitle: "Пошаговые наглядные руководства по стандартным процедурам технического обслуживания.",
+                guidesTitle: "Иллюстрированные <span>руководства</span>",
+                guidesSubtitle: "Следуйте нашим подробным инструкциям для проведения самостоятельного ремонта.",
+                guideSelectLabel: "Выберите руководство:",
+                guide1Name: "Руководство 1: Замена колеса автомобиля",
+                guide2Name: "Руководство 2: Обслуживание цепи мотоцикла",
+                guide1Step1Title: "1. Безопасность и парковка",
+                guide1Step1Text: "Припаркуйте машину на ровной поверхности, затяните ручник и установите противооткатные упоры под колеса.",
+                guide1Step2Title: "2. Ослабление гаек",
+                guide1Step2Text: "Баллонным ключом ослабьте колесные гайки примерно на пол-оборота. Не откручивайте их полностью.",
+                guide1Step3Title: "3. Подъем домкратом",
+                guide1Step3Text: "Установите домкрат под специальное усиленное ребро порога. Поднимите авто, пока колесо не оторвется от земли на 15 см.",
+                guide1Step4Title: "4. Замена колеса",
+                guide1Step4Text: "Полностью снимите гайки, снимите проколотое колесо, наденьте запасное и накрутите гайки вручную.",
+                guide1Step5Title: "5. Опускание и затяжка",
+                guide1Step5Text: "Медленно опустите машину до контакта колеса с землей. Затяните гайки крест-накрест с максимальным усилием.",
+                guide2Step1Title: "1. Подъем и осмотр",
+                guide2Step1Text: "Установите мотоцикл на центральную подножку или подкат. Прокрутите колесо, проверяя натяжение и износ.",
+                guide2Step2Title: "2. Очистка цепи",
+                guide2Step2Text: "Нанесите очиститель цепи. Используйте трехстороннюю щетку для удаления грязи, налета и старой смазки.",
+                guide2Step3Title: "3. Протирка насухо",
+                guide2Step3Text: "Начисто протрите цепь тряпкой, убирая все остатки грязи. Дайте ей полностью высохнуть.",
+                guide2Step4Title: "4. Регулировка натяжения",
+                guide2Step4Text: "Ослабьте гайку задней оси. Поворачивайте регулировочные болты с обеих сторон одинаково для провиса в 30-40 мм. Затяните ось.",
+                guide2Step5Title: "5. Нанесение смазки",
+                guide2Step5Text: "Медленно вращая колесо, распылите смазку на внутреннюю часть цепи. Дайте впитаться 15 минут перед поездкой.",
+                quizTitle: "Диагностический <span>тест механика</span>",
+                quizSubtitle: "Проверьте свой технический IQ. Сможете ли вы правильно определить неисправности?",
+                quizStart: "Начать тест",
+                quizNext: "Следующий вопрос",
+                quizRetry: "Пройти заново",
+                quizResults: "Ваши результаты",
+                footerText: "Академия авто- и моторемонта. Создано для любителей техники и будущих механиков.",
+                
+                // Vehicles data
+                toyotaTitle: "Toyota Camry",
+                toyotaCategory: "Автомобиль (Седан)",
+                toyotaDesc: "Легендарная надежность. Отличная модель для изучения базовой компоновки двигателя и диагностики.",
+                toyotaSpecs: "Двигатель: 2.5L 4-цил | Мощность: 203 л.с. | Привод: Передний",
+                toyotaRepairs: "1. Проверка жидкостей (удобный щуп КПП).; 2. Замена генератора.; 3. Замена воздушных фильтров.",
+                
+                bmwTitle: "BMW M3",
+                bmwCategory: "Автомобиль (Спорт)",
+                bmwDesc: "Высокоточное проектирование. Помогает изучить подвеску, турбонаддув и системы охлаждения.",
+                bmwSpecs: "Двигатель: 3.0L Twin-Turbo I6 | Мощность: 473 л.с. | Привод: Задний",
+                bmwRepairs: "1. Замена прокладки клапанной крышки при утечках.; 2. Замена ТНВД.; 3. Ремонт системы охлаждения.",
+                
+                mercedesTitle: "Mercedes C-Class",
+                mercedesCategory: "Автомобиль (Люкс)",
+                mercedesDesc: "Сложные электрические сети. Изучение сенсорных модулей, шины CAN-bus и систем активного торможения.",
+                mercedesSpecs: "Двигатель: 2.0L Turbo 4-Цил + Гибрид | Мощность: 255 л.с. | Привод: Задний/Полный",
+                mercedesRepairs: "1. Замена тормозных дисков и датчиков износа.; 2. Замена вспомогательного АКБ.; 3. Диагностика помпы.",
+                
+                chevroletTitle: "Chevrolet Cobalt",
+                chevroletCategory: "Автомобиль (Эконом)",
+                chevroletDesc: "Простая конструкция. Идеально подходит для ремонта передней подвески, замены стоек и рулевых тяг.",
+                chevroletSpecs: "Двигатель: 1.5L 4-цил | Мощность: 105 л.с. | Привод: Передний",
+                chevroletRepairs: "1. Замена передних амортизаторов в сборе.; 2. Замена датчика кислорода (лямбда).; 3. Обслуживание катушек зажигания.",
+                
+                hondaTitle: "Honda CBR600",
+                hondaCategory: "Мотоцикл (Спорт)",
+                hondaDesc: "Высокооборотистый рядный четырехцилиндровый двигатель. Понимание ГРМ на высоких оборотах.",
+                hondaSpecs: "Двигатель: 599 куб.см Inline-4 | Мощность: 113 л.с. | Вес: 194 кг",
+                hondaRepairs: "1. Замена свечей (в тесном пространстве).; 2. Проверка и натяжение цепи.; 3. Замена сальников вилки.",
+                
+                yamahaTitle: "Yamaha MT-07",
+                yamahaCategory: "Мотоцикл (Нейкед)",
+                yamahaDesc: "Тяговитый двухцилиндровый мотор. Отличная компоновка для регулировки троса сцепления и радиатора.",
+                yamahaSpecs: "Двигатель: 689 куб.см Parallel-Twin | Мощность: 74 л.с. | Вес: 184 кг",
+                yamahaRepairs: "1. Регулировка люфта троса сцепления.; 2. Замена масла и фильтра.; 3. Очистка ведомой звезды.",
+                
+                kawasakiTitle: "Kawasaki Ninja 400",
+                kawasakiCategory: "Мотоцикл (Спорт)",
+                kawasakiDesc: "Очень доступный мотоцикл для новичков. Простое устройство цепного привода и тормозной системы.",
+                kawasakiSpecs: "Двигатель: 399 куб.см Parallel-Twin | Мощность: 49 л.с. | Вес: 168 кг",
+                kawasakiRepairs: "1. Замена передних колодок.; 2. Слив и замена охлаждающей жидкости.; 3. Смазка троса газа.",
+                
+                suzukiTitle: "Suzuki GSX-R",
+                suzukiCategory: "Мотоцикл (Суперспорт)",
+                suzukiDesc: "Классический трековый аппарат. Изучение синхронизации дроссельных заслонок и радиальных тормозов.",
+                suzukiSpecs: "Двигатель: 750 куб.см Inline-4 | Мощность: 148 л.с. | Вес: 190 кг",
+                suzukiRepairs: "1. Очистка клемм и замена АКБ.; 2. Переборка радиального суппорта.; 3. Чистка короба воздушного фильтра.",
+
+                video1Title: "Как заменить моторное масло (Полное руководство)",
+                video2Title: "Замена тормозных колодок и дисков",
+                video3Title: "Диагностика мигающего чека двигателя",
+                video4Title: "Регулировка и смазка цепи мотоцикла",
+                video5Title: "Как почистить карбюратор мотоцикла",
+                video6Title: "Замена свечи зажигания и катушки на мотоцикле",
+
+                q1Question: "Какого цвета обычно свежее моторное масло?",
+                q1OptA: "Черное или серебристое металлик",
+                q1OptB: "Прозрачное янтарное или золотистое",
+                q1OptC: "Ярко-вишнево-красное",
+                q1OptD: "Молочно-белое или светло-бежевое",
+                
+                q2Question: "В чем основное назначение свечи зажигания в двигателе?",
+                q2OptA: "Нагнетать топливо под давлением в цилиндр",
+                q2OptB: "Поджигать топливовоздушную смесь электрической искрой",
+                q2OptC: "Охлаждать стенки цилиндра на высоких оборотах",
+                q2OptD: "Заряжать вспомогательный аккумулятор во время езды",
+
+                q3Question: "Как часто следует проверять и регулировать натяжение цепи мотоцикла?",
+                q3OptA: "Раз в год или каждые 10 000 км",
+                q3OptB: "Каждые 500-1000 км (а также после езды под дождем)",
+                q3OptC: "Только когда она начинает греметь или слетает со звезды",
+                q3OptD: "Каждый раз при замене шин",
+
+                q4Question: "Что означает МИГАЮЩИЙ индикатор 'Check Engine' (чек)?",
+                q4OptA: "Заканчивается жидкость стеклоомывателя",
+                q4OptB: "Происходят серьезные пропуски зажигания, угрожающие катализатору",
+                q4OptC: "Мультимедийной системе требуется обновление ПО",
+                q4OptD: "Пора делать плановую замену масла через 100 км",
+
+                q5Question: "Каким инструментом затягивают болты ГБЦ с точным моментом?",
+                q5OptA: "Пневматическим гайковертом высокого давления",
+                q5OptB: "Калиброванным динамометрическим ключом",
+                q5OptC: "Разводным ключом общего назначения",
+                q5OptD: "Мощными пассатижами-зажимами",
+
+                quizScoreText: "Вы набрали {score} из 5 баллов!",
+                quizRankMechanic: "Звание: Мастер-диагност! Отличные знания.",
+                quizRankApprentice: "Звание: Подмастерье в гараже. Хороший результат, продолжайте учиться!",
+                quizRankNovice: "Звание: Гаражный любитель. Рекомендуем изучить наши материалы!"
+            },
+            ko: {
+                navHome: "홈",
+                navGallery: "갤러리",
+                navLevels: "학습 단계",
+                navVideos: "비디오 강좌",
+                navGuides: "정비 가이드",
+                navQuiz: "진단 퀴즈",
+                heroTitle: "자동차 & 오토바이 <span>정비 마스터</span>",
+                heroSubtitle: "역동적인 인더스트리얼 차고에서 기계 정비와 차량 서비스를 체계적으로 배워보세요.",
+                heroCta: "학습 시작하기",
+                galleryTitle: "차량 전시장 및 <span>기술 명세</span>",
+                gallerySubtitle: "차량을 선택하여 세부 사양과 일반적인 정비 가이드를 확인해보세요.",
+                tabCars: "자동차",
+                tabMotorcycles: "오토바이",
+                learnTitle: "정비 <span>학습 코스</span>",
+                learnSubtitle: "초보자부터 숙련된 프로 정비사로 성장하는 단계별 학습 로드맵.",
+                levelBeginner: "초급",
+                levelIntermediate: "중급",
+                levelProfessional: "고급 (프로)",
+                levelBeginnerDesc: "안전 수칙, 기본 액체류 점검, 타이어 교체 방법 및 계기판 경고등 분석 등을 배웁니다.",
+                levelIntermediateDesc: "브레이크 패드 교체, 서스펜션 진단, 스파크 플러그 튜닝 및 배터리 시스템 정비를 마스터합니다.",
+                levelProfessionalDesc: "엔진 정밀 오버홀, ECU(전자 제어 장치) 코딩, 정밀 배선 및 전기 진단 시스템을 심도 있게 다룹니다.",
+                videoTitle: "동영상 <span>자습서</span>",
+                videoSubtitle: "일반적인 유지 관리 절차에 대한 시각적인 단계별 가이드.",
+                guidesTitle: "일러스트 <span>가이드</span>",
+                guidesSubtitle: "현장에서 적용 가능한 상세한 실전 수동 정비 지침을 제공합니다.",
+                guideSelectLabel: "가이드 선택:",
+                guide1Name: "가이드 1: 자동차 타이어(휠) 교환 방법",
+                guide2Name: "가이드 2: 오토바이 체인 유지 관리법",
+                guide1Step1Title: "1. 안전 지대 확보 및 차바퀴 고정",
+                guide1Step1Text: "평평한 곳에 주차하고 사이드 브레이크를 채운 후, 바퀴 반대편에 고임목을 대어 밀림을 방지합니다.",
+                guide1Step2Title: "2. 휠 너트 살짝 풀기",
+                guide1Step2Text: "휠 렌치(복스)를 사용해 지상에서 바퀴 너트를 반 바퀴 정도 풀어줍니다. (아직 완전히 빼지는 마세요)",
+                guide1Step3Title: "3. 잭업(차체 들어 올리기)",
+                guide1Step3Text: "지정된 차체 하부 잭 포인트(핀치 웰드)에 작키를 걸고 타이어가 지면에서 약 15cm 뜰 때까지 들어올립니다.",
+                guide1Step4Title: "4. 휠 타이어 교체",
+                guide1Step4Text: "너트를 완전히 풀어 평타이어를 빼낸 후, 준비한 스페어 타이어를 허브에 걸고 너트를 손으로 최대한 조입니다.",
+                guide1Step5Title: "5. 하강 및 토크 조임",
+                guide1Step5Text: "차를 천천히 내려 타이어가 땅에 닿으면 렌치로 별 모양(대각선) 순서로 너트를 규정 토크로 꽉 조입니다.",
+                guide2Step1Title: "1. 오토바이 거치 및 점검",
+                guide2Step1Text: "메인 스탠드 또는 리어 스탠드로 바이크를 띄웁니다. 뒷바퀴를 돌리며 체인 유격과 늘어남을 점검합니다.",
+                guide2Step2Title: "2. 체인 세척 및 찌든 때 제거",
+                guide2Step2Text: "바이크 체인 세정제를 뿌린 후 3면 솔(체인 브러시)을 이용해 굳은 그리스와 이물질을 깨끗이 솔질합니다.",
+                guide2Step3Title: "3. 잔여 세정제 닦기 및 건조",
+                guide2Step3Text: "마른 헝겊(말걸레)으로 닦아 오염물질을 완전히 닦아냅니다. 체인 오일을 도포하기 전 완벽히 건조합니다.",
+                guide2Step4Title: "4. 체인 장력 조절",
+                guide2Step4Text: "리어 액슬(바퀴축) 너트를 풉니다. 좌우 조절 볼트를 동일한 눈금만큼 돌려 유격(30-40mm)을 맞춘 후 액슬 너트를 잠급니다.",
+                guide2Step5Title: "5. 체인 루브(오일) 도포",
+                guide2Step5Text: "바퀴를 손으로 천천히 돌려가며 체인 안쪽 롤러 부위에 체인 루브를 골고루 분사합니다. 15분 대기 후 운행합니다.",
+                quizTitle: "자가 정비 <span>역량 평가</span>",
+                quizSubtitle: "나의 엔지니어링 IQ는? 올바른 문제 해결 및 자가 정비 지식을 테스트해 보세요.",
+                quizStart: "퀴즈 시작",
+                quizNext: "다음 문제",
+                quizRetry: "다시 도전",
+                quizResults: "퀴즈 결과",
+                footerText: "자동차 & 오토바이 정비 아카데미. 기술 애호가와 미래의 엔지니어를 위해 제작되었습니다.",
+                
+                // Vehicles data
+                toyotaTitle: "Toyota Camry",
+                toyotaCategory: "자동차 (세단)",
+                toyotaDesc: "전설적인 내구성으로 유명한 모델. 엔진 룸 레이아웃과 기본 고장 진단을 학습하기에 매우 적합합니다.",
+                toyotaSpecs: "엔진: 2.5L 4기통 | 출력: 203마력 | 구동방식: FWD (전륜)",
+                toyotaRepairs: "1. 오일류 확인 (접근이 쉬운 미션 오일 게이지).; 2. 알터네이터 교체.; 3. 캐빈/엔진 에어 필터 스왑.",
+                
+                bmwTitle: "BMW M3",
+                bmwCategory: "자동차 (스포츠)",
+                bmwDesc: "고도의 엔지니어링 집약체. 멀티링크 서스펜션, 터보차저 시스템 및 정밀 쿨링 라인을 연구합니다.",
+                bmwSpecs: "엔진: 3.0L 트윈터보 I6 | 출력: 473마력 | 구동방식: RWD (후륜)",
+                bmwRepairs: "1. 밸브 커버 가스켓 누유 해결.; 2. 고압 연료 펌프(HPFP) 교체.; 3. 전체 냉각계통 오버홀.",
+                
+                mercedesTitle: "Mercedes C-Class",
+                mercedesCategory: "자동차 (럭셔리)",
+                mercedesDesc: "정밀 전장 장치와 럭셔리 설계. 온보드 센서 모듈, CAN-bus 통신망, 그리고 전자식 브레이킹 진단.",
+                mercedesSpecs: "엔진: 2.0L 터보 4기통 + 마일드 하이브리드 | 출력: 255마력 | 구동방식: RWD/AWD",
+                mercedesRepairs: "1. 브레이크 로터 및 마모 감지 센서 패드 교체.; 2. 보조 배터리 교환.; 3. 보조 냉각수 펌프 점검.",
+                
+                chevroletTitle: "Chevrolet Cobalt",
+                chevroletCategory: "자동차 (이코노ми)",
+                chevroletDesc: "매우 직관적이고 단순한 설계. 전륜 서스펜션 작동 원리, 쇼크 업소버 교체 및 조향 링크 학습에 적격.",
+                chevroletSpecs: "엔진: 1.5L 4기통 | 출력: 105마력 | 구동방식: FWD (전륜)",
+                chevroletRepairs: "1. 프론트 스트럿 조립체 탈부착.; 2. 산소(O2) 센서 교체.; 3. 점화 코일 팩 유지 관리.",
+                
+                hondaTitle: "Honda CBR600",
+                hondaCategory: "오토바이 (스포츠)",
+                hondaDesc: "고회전형 인라인 4기통 엔진 장착. 고RPM 밸브 타이밍과 좁은 공간 내 고밀도 배치 레이아웃 이해.",
+                hondaSpecs: "엔진: 599cc 직렬 4기통 | 출력: 113마력 | 중량: 194 kg",
+                hondaRepairs: "1. 스파크 플러그 교체 (좁은 공간 점검).; 2. 드라이브 체인 텐션 조절.; 3. 프론트 포크 오일 씰 교환.",
+                
+                yamahaTitle: "Yamaha MT-07",
+                yamahaCategory: "오토바이 (네이키드)",
+                yamahaDesc: "토크 중심의 2기통 엔진. 클러치 케이블 유격 조정 및 라디에이터 점검 방법을 학습하기 좋은 표준 레이아웃.",
+                yamahaSpecs: "엔진: 689cc 2기통 | 출력: 74마력 | 중량: 184 kg",
+                yamahaRepairs: "1. 클러치 와이어 미세 유격 설정.; 2. 엔진 오일 및 필터 교체.; 3. 대기어 세척 및 마모도 점검.",
+                
+                kawasakiTitle: "Kawasaki Ninja 400",
+                kawasakiCategory: "오토바이 (스포츠)",
+                kawasakiDesc: "진입 장벽이 낮은 최고의 입문용 모터사이클. 단일 체인 드라이브 및 브레이크 시스템 기본 이해.",
+                kawasakiSpecs: "엔진: 399cc 2기통 | 출력: 49마력 | 중량: 168 kg",
+                kawasakiRepairs: "1. 프론트 브레이크 패드 자가 교체.; 2. 냉각수 드레인 및 리필.; 3. 스로틀 케이블 윤활.",
+                
+                suzukiTitle: "Suzuki GSX-R",
+                suzukiCategory: "오토바이 (슈퍼스포츠)",
+                suzukiDesc: "정통 서킷 사양. 인젝터 스로틀 바디 동기화 정밀 작업 및 복동식 레이디얼 브레이크 캘리퍼 오버홀.",
+                suzukiSpecs: "엔진: 750cc 직렬 4기통 | 출력: 148마력 | 중량: 190 kg",
+                suzukiRepairs: "1. 배터리 단자 산화물 세척 및 교체.; 2. 레이디얼 캘리퍼 오버홀.; 3. 에어크리너 박스 및 흡기 통로 점검.",
+
+                video1Title: "엔진 오일 교체하는 방법 (풀 가이드)",
+                video2Title: "브레이크 패드 및 디스크 로터 교체 튜토리얼",
+                video3Title: "엔진 경고등 깜빡임 증상 진단 및 조치법",
+                video4Title: "모터사이클 체인 유격 조정 및 루브 윤활",
+                video5Title: "오토바이 캬브레터 분해 청소 요령",
+                video6Title: "모터사이클 스파크 플러그 및 점화 코일 교체",
+
+                q1Question: "새 엔진 오일의 정상적인 윤활유 색상은 무엇인가요?",
+                q1OptA: "완전 검은색 또는 은빛 메탈릭 색상",
+                q1OptB: "맑은 호박색 또는 황금빛 노란색",
+                q1OptC: "밝은 체리색 또는 불투명한 빨간색",
+                q1OptD: "우윳빛 흰색 또는 밝은 베이지색",
+                
+                q2Question: "엔진 실린더 헤드에 장착된 스파크 플러그의 핵심 역할은 무엇인가요?",
+                q2OptA: "실린더 내부로 연료를 고압 분사하는 역할",
+                q2OptB: "압축된 혼합기(연료+공기)에 전기 불꽃을 튀겨 점화하는 역할",
+                q2OptC: "고회전 시 엔진 실린더 내벽 온도를 직접 식혀주는 역할",
+                q2OptD: "운행 중 12V 메인 배터리를 실시간 충전해주는 역할",
+
+                q3Question: "오토바이 드라이브 체인의 장력 조절 및 청소 주기는 언제인가요?",
+                q3OptA: "1년에 한 번 또는 매 10,000km 주행 후",
+                q3OptB: "매 500-1,000km 주행 후 (우천 주행 후에는 즉시 점검)",
+                q3OptC: "체인이 이탈되거나 쇠 긁는 잡음이 심하게 날 때에만",
+                q3OptD: "앞/뒤 타이어를 새것으로 교체할 때마다 같이 점검",
+
+                q4Question: "엔진 경고등이 꺼지지 않고 '깜빡(Flashing)'거릴 때의 의미는?",
+                q4OptA: "워셔액이 거의 부족하여 빠른 보충이 필요한 상태",
+                q4OptB: "심각한 엔진 미스파이어(失火) 상태로, 촉매 변환기 파손 위험 있음",
+                q4OptC: "인포테인먼트 디스플레이 화면의 무선 업데이트 필요 경고",
+                q4OptD: "표준 엔진 오일 정기 정비 시점이 100km 남았음을 알림",
+
+                q5Question: "실린더 헤드 볼트 등을 규정된 정확한 힘으로 조일 때 사용하는 공구는?",
+                q5OptA: "초고압 공기압 임팩트 렌치",
+                q5OptB: "눈금 설정식 토크 렌치(Torque Wrench)",
+                q5OptC: "사이즈를 마음대로 조절 가능한 몽키 스패너",
+                q5OptD: "앞이 뭉툭한 다목적 펜치 또는 첼라 플라이어",
+
+                quizScoreText: "5문제 중 {score}문제를 맞추셨습니다!",
+                quizRankMechanic: "등급: 마스터 정비사! 아주 뛰어난 정비 지식을 갖고 계십니다.",
+                quizRankApprentice: "등급: 개러지 견습생. 훌륭합니다, 지식을 계속 쌓아보세요!",
+                quizRankNovice: "등급: 정비 입문자. 학습 레벨 단계를 차근차근 검토해보세요!"
+            }
+        };
+
+        // Current Application State
+        let currentLanguage = 'en';
+
+        // Switch Language function
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Toggle active button style
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if(btn.textContent.toLowerCase() === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Update all element content that have data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Update placeholder inputs/selectors if any
+            const selectEl = document.getElementById('guide-select');
+            if(selectEl) {
+                // Re-render select options
+                selectEl.options[0].text = translations[lang].guide1Name;
+                selectEl.options[1].text = translations[lang].guide2Name;
+            }
+
+            // Sync currently visible components that depend on state
+            loadSelectedGuide();
+            if (activeModalVehicle) {
+                renderModalData(activeModalVehicle);
+            }
+            if (quizActive) {
+                displayQuestion();
+            }
+        }
+
+
+        /* ==========================================
+           2. DYNAMIC HERO CANVAS PARTICLES
+           ========================================== */
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        function initCanvas() {
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            window.addEventListener('mousemove', (e) => {
+                // Adjust coordinates relative to hero container
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
+            window.addEventListener('mouseout', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+            createParticles();
+            animateParticles();
+        }
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 2 + 1;
+                this.baseX = x;
+                this.baseY = y;
+                this.density = (Math.random() * 30) + 10;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(255, 69, 0, 0.6)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            update() {
+                // Float movement
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce boundaries
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+                // Mouse interaction (repulsion)
+                if (mouse.x != null && mouse.y != null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        let directionX = dx / distance;
+                        let directionY = dy / distance;
+                        this.x -= directionX * force * 5;
+                        this.y -= directionY * force * 5;
+                    }
+                }
+            }
+        }
+
+        function createParticles() {
+            particles = [];
+            const numberOfParticles = Math.floor((canvas.width * canvas.height) / 9000);
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw floating mesh connections
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                for (let j = i; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        ctx.strokeStyle = `rgba(255, 69, 0, ${0.15 - (dist / 100) * 0.15})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        /* ==========================================
+           3. DYNAMIC DETAILS MODAL
+           ========================================== */
+        let activeModalVehicle = null;
+        const vehicleImages = {
+            toyota: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=600&q=80',
+            bmw: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80',
+            mercedes: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=600&q=80',
+            chevrolet: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80',
+            honda: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=600&q=80',
+            yamaha: 'https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=600&q=80',
+            kawasaki: 'https://images.unsplash.com/photo-1533614767277-2cf3b08e50b7?auto=format&fit=crop&w=600&q=80',
+            suzuki: 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&w=600&q=80'
+        };
+
+        const vehicleBlueprints = {
+            toyota: { chassis: 'TNGA-K FWD Platform', voltage: '12V / 80AH Battery', ecu: 'Toyota Safety Sense CAN' },
+            bmw: { chassis: 'BMW CLAR Sport Platform', voltage: '12V AGM Lightweight', ecu: 'BMW OBD-II D-CAN Protocol' },
+            mercedes: { chassis: 'MRA2 Luxury Architecture', voltage: '48V Mild Hybrid + 12V Aux', ecu: 'Mercedes Star CAN-bus network' },
+            chevrolet: { chassis: 'GM Delta II Platform', voltage: '12V Lead Acid Starter', ecu: 'GMLAN OBD-II Protocol' },
+            honda: { chassis: 'Aluminium Twin-Spar', voltage: '12V Maintenance Free YTZ10S', ecu: 'Keihin PGM-FI System' },
+            yamaha: { chassis: 'Steel Diamond Frame', voltage: '12V YTZ10S Battery', ecu: 'Yamaha Denso OBD-Moto' },
+            kawasaki: { chassis: 'High-Tensile Trellis', voltage: '12V YTX9-BS Battery', ecu: 'Mitsubishi ECU Interface' },
+            suzuki: { chassis: 'Cast Aluminium Cradle', voltage: '12V YT12A-BS Battery', ecu: 'Suzuki SDTV Dual Throttle OBD' }
+        };
+
+        function openDetailsModal(vehicleKey) {
+            activeModalVehicle = vehicleKey;
+            renderModalData(vehicleKey);
+            document.getElementById('details-modal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Lock scrolling
+        }
+
+        function renderModalData(vehicleKey) {
+            const langData = translations[currentLanguage];
+            
+            // Set simple specs & description
+            document.getElementById('modal-img').src = vehicleImages[vehicleKey];
+            document.getElementById('modal-title').textContent = langData[`${vehicleKey}Title`];
+            document.getElementById('modal-category').textContent = langData[`${vehicleKey}Category`];
+            document.getElementById('modal-specs').textContent = langData[`${vehicleKey}Specs`];
+            document.getElementById('modal-desc').textContent = langData[`${vehicleKey}Desc`];
+
+            // Render blueprints
+            const bp = vehicleBlueprints[vehicleKey];
+            document.getElementById('blueprint-chassis').textContent = bp.chassis;
+            document.getElementById('blueprint-voltage').textContent = bp.voltage;
+            document.getElementById('blueprint-ecu').textContent = bp.ecu;
+
+            // Render repairs list
+            const listEl = document.getElementById('modal-repairs');
+            listEl.innerHTML = '';
+            const repairs = langData[`${vehicleKey}Repairs`].split(';');
+            repairs.forEach(repair => {
+                if(repair.trim()) {
+                    const li = document.createElement('li');
+                    li.textContent = repair.trim();
+                    listEl.appendChild(li);
+                }
+            });
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('details-modal').classList.remove('active');
+            document.body.style.overflow = 'auto'; // Unlock scrolling
+            activeModalVehicle = null;
+        }
+
+        function closeModalOnOutsideClick(event) {
+            const modalContent = document.querySelector('.modal-content');
+            if (!modalContent.contains(event.target)) {
+                closeDetailsModal();
+            }
+        }
+
+
+        /* ==========================================
+           4. VIDEOS CATEGORY FILTER
+           ========================================== */
+        function filterVideos(category) {
+            // Update active button state
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if(btn.getAttribute('onclick').includes(category)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Filter grid cards
+            document.querySelectorAll('.video-card').forEach(card => {
+                if(category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+
+        /* ==========================================
+           5. REPAIR GUIDES SLIDER CONTROL
+           ========================================== */
+        let currentGuide = 1;
+        let currentGuideStep = 0;
+        const totalGuideSteps = 5;
+
+        // Visual links and titles for the steps
+        const guideStepData = {
+            1: [
+                {
+                    titleKey: "guide1Step1Title",
+                    textKey: "guide1Step1Text",
+                    img: "https://images.unsplash.com/photo-1507136566006-cfc505b114fc?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    titleKey: "guide1Step2Title",
+                    textKey: "guide1Step2Text",
+                    img: "https://images.unsplash.com/photo-1517524206127-48bbd363f3d7?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    titleKey: "guide1Step3Title",
+                    textKey: "guide1Step3Text",
+                    img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    titleKey: "guide1Step4Title",
+                    textKey: "guide1Step4Text",
+                    img: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    titleKey: "guide1Step5Title",
+                    textKey: "guide1Step5Text",
+                    img: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80"
+                }
+            ],
+            2: [
+                {
+                    titleKey: "guide2Step1Title",
+                    textKey: "guide2Step1Text",
+                    img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    titleKey: "guide2Step2Title",
+                    textKey: "guide2Step2Text",
+                    img: "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    titleKey: "guide2Step3Title",
+                    textKey: "guide2Step3Text",
+                    img: "https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    titleKey: "guide2Step4Title",
+                    textKey: "guide2Step4Text",
+                    img: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    titleKey: "guide2Step5Title",
+                    textKey: "guide2Step5Text",
+                    img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80"
+                }
+            ]
+        };
+
+        function loadSelectedGuide() {
+            const select = document.getElementById('guide-select');
+            currentGuide = parseInt(select.value);
+            currentGuideStep = 0;
+            renderGuideStep();
+        }
+
+        function renderGuideStep() {
+            const langData = translations[currentLanguage];
+            const steps = guideStepData[currentGuide];
+            const currentStep = steps[currentGuideStep];
+
+            // Set slide text & image
+            document.getElementById('guide-step-title').textContent = langData[currentStep.titleKey];
+            document.getElementById('guide-step-text').textContent = langData[currentStep.textKey];
+            document.getElementById('guide-step-img').src = currentStep.img;
+
+            // Render navigation node highlights
+            const nodes = document.querySelectorAll('.guide-step-node');
+            nodes.forEach((node, index) => {
+                node.className = 'guide-step-node'; // Reset classes
+                if (index === currentGuideStep) {
+                    node.classList.add('active');
+                } else if (index < currentGuideStep) {
+                    node.classList.add('completed');
+                }
+            });
+
+            // Set progress bar width
+            const fillWidth = (currentGuideStep / (totalGuideSteps - 1)) * 100;
+            document.getElementById('guide-progress-fill').style.width = `${fillWidth}%`;
+
+            // Enable/Disable navigation buttons
+            document.getElementById('guide-prev-btn').disabled = (currentGuideStep === 0);
+            document.getElementById('guide-next-btn').disabled = (currentGuideStep === totalGuideSteps - 1);
+        }
+
+        function adjustGuideStep(direction) {
+            currentGuideStep += direction;
+            if (currentGuideStep < 0) currentGuideStep = 0;
+            if (currentGuideStep >= totalGuideSteps) currentGuideStep = totalGuideSteps - 1;
+            renderGuideStep();
+        }
+
+        function jumpToGuideStep(stepIndex) {
+            currentGuideStep = stepIndex;
+            renderGuideStep();
+        }
+
+
+        /* ==========================================
+           6. DIAGNOSTIC SCANNER QUIZ CONTROLLER
+           ========================================== */
+        let quizActive = false;
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let hasAnswered = false;
+
+        const quizData = [
+            {
+                questionKey: "q1Question",
+                options: [
+                    { key: "q1OptA", correct: false },
+                    { key: "q1OptB", correct: true },
+                    { key: "q1OptC", correct: false },
+                    { key: "q1OptD", correct: false }
+                ]
+            },
+            {
+                questionKey: "q2Question",
+                options: [
+                    { key: "q2OptA", correct: false },
+                    { key: "q2OptB", correct: true },
+                    { key: "q2OptC", correct: false },
+                    { key: "q2OptD", correct: false }
+                ]
+            },
+            {
+                questionKey: "q3Question",
+                options: [
+                    { key: "q3OptA", correct: false },
+                    { key: "q3OptB", correct: true },
+                    { key: "q3OptC", correct: false },
+                    { key: "q3OptD", correct: false }
+                ]
+            },
+            {
+                questionKey: "q4Question",
+                options: [
+                    { key: "q4OptA", correct: false },
+                    { key: "q4OptB", correct: true },
+                    { key: "q4OptC", correct: false },
+                    { key: "q4OptD", correct: false }
+                ]
+            },
+            {
+                questionKey: "q5Question",
+                options: [
+                    { key: "q5OptA", correct: false },
+                    { key: "q5OptB", correct: true },
+                    { key: "q5OptC", correct: false },
+                    { key: "q5OptD", correct: false }
+                ]
+            }
+        ];
+
+        function startQuiz() {
+            quizActive = true;
+            score = 0;
+            currentQuestionIndex = 0;
+            hasAnswered = false;
+
+            document.getElementById('quiz-start-screen').style.display = 'none';
+            document.getElementById('quiz-results-screen').style.display = 'none';
+            document.getElementById('quiz-question-box').style.display = 'flex';
+
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const langData = translations[currentLanguage];
+            const q = quizData[currentQuestionIndex];
+            hasAnswered = false;
+
+            // Hide Next button until answer is chosen
+            document.querySelector('#quiz-navigation .btn').style.display = 'none';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+
+            // Set question texts
+            document.getElementById('quiz-current-question-num').textContent = `DTC 0${currentQuestionIndex + 1}/05:`;
+            document.getElementById('quiz-progress-txt').textContent = `${currentQuestionIndex * 20}% COMPLETE`;
+            document.getElementById('quiz-question-txt').textContent = langData[q.questionKey];
+
+            // Render options
+            const optionsBox = document.getElementById('quiz-options');
+            optionsBox.innerHTML = '';
+            const labels = ["A", "B", "C", "D"];
+            q.options.forEach((opt, index) => {
+                const button = document.createElement('button');
+                button.className = 'quiz-option-btn';
+                button.innerHTML = `
+                    <span>${labels[index]}. ${langData[opt.key]}</span>
+                    <span class="option-indicator">[ ]</span>
+                `;
+                button.onclick = () => selectOption(button, opt.correct);
+                optionsBox.appendChild(button);
+            });
+        }
+
+        function selectOption(selectedBtn, isCorrect) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+
+            // Score evaluation
+            if (isCorrect) {
+                score++;
+                selectedBtn.classList.add('correct');
+                selectedBtn.querySelector('.option-indicator').textContent = '[OK]';
+            } else {
+                selectedBtn.classList.add('incorrect');
+                selectedBtn.querySelector('.option-indicator').textContent = '[FAIL]';
+                
+                // Highlight correct answer
+                const q = quizData[currentQuestionIndex];
+                const optionButtons = document.querySelectorAll('.quiz-option-btn');
+                q.options.forEach((opt, idx) => {
+                    if (opt.correct) {
+                        optionButtons[idx].classList.add('correct');
+                        optionButtons[idx].querySelector('.option-indicator').textContent = '[OK]';
+                    }
+                });
+            }
+
+            // Disable all buttons
+            document.querySelectorAll('.quiz-option-btn').forEach(btn => {
+                btn.classList.add('disabled');
+            });
+
+            // Display Next button
+            document.getElementById('quiz-next-btn').style.display = 'block';
+        }
+
+        function nextQuizQuestion() {
+            currentQuestionIndex++;
+            if(currentQuestionIndex < quizData.length) {
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizActive = false;
+            document.getElementById('quiz-question-box').style.display = 'none';
+            document.getElementById('quiz-results-screen').style.display = 'flex';
+
+            const langData = translations[currentLanguage];
+            document.getElementById('score-text').textContent = `${score}/5`;
+
+            // Circle Fill Animation
+            const circle = document.getElementById('score-circle');
+            const circumference = 2 * Math.PI * 70; // r = 70
+            const offset = circumference - (score / 5) * circumference;
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = offset;
+
+            // Ranks and description
+            const rankLabel = document.getElementById('rank-label');
+            const rankAdvice = document.getElementById('rank-advice');
+
+            if (score === 5) {
+                rankLabel.textContent = langData.quizRankMechanic;
+                rankLabel.style.color = 'var(--success)';
+            } else if (score >= 3) {
+                rankLabel.textContent = langData.quizRankApprentice;
+                rankLabel.style.color = 'var(--accent)';
+            } else {
+                rankLabel.textContent = langData.quizRankNovice;
+                rankLabel.style.color = 'var(--error)';
+            }
+
+            // Set dynamic message for score text translation if any
+            const scoreTextTranslate = langData.quizScoreText.replace('{score}', score);
+            document.getElementById('score-text').textContent = `${score}/5`;
+            rankAdvice.textContent = scoreTextTranslate;
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+
+
+        /* ==========================================
+           7. SCROLL INTERSECT REVEAL ANIMATIONS
+           ========================================== */
+        const reveals = document.querySelectorAll('.reveal');
+        
+        function checkScrollReveal() {
+            const triggerBottom = window.innerHeight * 0.85;
+            
+            reveals.forEach(reveal => {
+                const revealTop = reveal.getBoundingClientRect().top;
+                if(revealTop < triggerBottom) {
+                    reveal.classList.add('active');
+                }
+            });
+        }
+
+        // Header dynamic color on scroll
+        const header = document.getElementById('header');
+        function adjustHeaderStyle() {
+            if(window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            checkScrollReveal();
+            adjustHeaderStyle();
+        });
+
+
+        /* ==========================================
+           8. MOBILE NAVIGATION CONTROLLER
+           ========================================== */
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('#nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+
+        /* ==========================================
+           9. APP INITIALIZATION
+           ========================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            initCanvas();
+            loadSelectedGuide();
+            checkScrollReveal();
+            
+            // Set initial dynamic translation for selected items
+            switchLanguage('en');
+        });
+    </script>
+</body>
+</html>
