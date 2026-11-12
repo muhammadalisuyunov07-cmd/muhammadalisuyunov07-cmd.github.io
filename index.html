@@ -1115,15 +1115,15 @@
 
         <!-- Project 3 -->
         <div class="interactive-card project-card">
-          <span class="project-tag" data-i18n="project_3_tag">Coming Soon</span>
-          <h3 class="project-title" data-i18n="project_3_title">Future Showcase</h3>
+          <span class="project-tag" data-i18n="project_3_tag">Fintech Dashboard</span>
+          <h3 class="project-title" data-i18n="project_3_title">Korean Stock Market</h3>
           <p class="project-desc" data-i18n="project_3_desc">
-            Stay tuned! The next innovative project is currently in the oven. I'll publish its repository here as soon as it is ready.
+            A modern financial analytics dashboard tracking KOSPI blue-chips, simulated market price movements, interactive charts, and live ECB foreign exchange rates.
           </p>
-          <a href="#" class="project-link" style="opacity: 0.5; pointer-events: none;">
-            <span>In Development</span>
+          <a href="stocks.html" class="project-link">
+            <span data-i18n="project_3_link">Live Dashboard</span>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
             </svg>
           </a>
         </div>
@@ -1197,9 +1197,10 @@
         project_2_tag: "Web Simulation",
         project_2_title: "GearHead Academy",
         project_2_desc: "An interactive dashboard and diagnostic repair simulator for cars and motorcycles, featuring component guides, step-by-step assembly instructions, and real-time quizzes.",
-        project_3_tag: "Coming Soon",
-        project_3_title: "Future Showcase",
-        project_3_desc: "Stay tuned! The next innovative project is currently in the oven. I'll publish its repository here as soon as it is ready.",
+        project_3_tag: "Fintech Dashboard",
+        project_3_title: "Korean Stock Market",
+        project_3_desc: "A modern financial analytics dashboard tracking KOSPI blue-chips, simulated market price movements, interactive charts, and live ECB foreign exchange rates.",
+        project_3_link: "Live Dashboard",
         contact_label: "Get In Touch",
         contact_title: "Let's Collaborate",
         contact_desc: "Have a project idea, want to collaborate, or just say hello? Feel free to reach out to me anytime!",
@@ -1237,9 +1238,10 @@
         project_2_tag: "Veb simulyatsiya",
         project_2_title: "GearHead Akademiyasi",
         project_2_desc: "Avtomobillar va mototsikllarni ta'mirlash bo'yicha interaktiv diagnostika simulyatori. Unda butlovchi qismlar qo'llanmasi, bosqichma-bosqich yig'ish va testlar mavjud.",
-        project_3_tag: "Tez kunda",
-        project_3_title: "Kutayotgan loyiha",
-        project_3_desc: "Tez kunda yangi innovatsion loyiha qo'shiladi. Ish bitishi bilan uning repozitoriyasini shu yerda nashr etaman.",
+        project_3_tag: "Fintex paneli",
+        project_3_title: "Koreya fond bozori",
+        project_3_desc: "KOSPI kompaniyalari tahlili, bozor simulyatsiyasi, interaktiv grafiklar va Yevropa Markaziy Bankining jonli valyuta kurslarini kuzatuvchi zamonaviy fintex paneli.",
+        project_3_link: "Jonli panel",
         contact_label: "Bog'lanish",
         contact_title: "Keling, birga ishlaymiz",
         contact_desc: "Loyiha takliflari, hamkorlik yoki shunchaka suhbatlashish uchun istalgan vaqtda yozishingiz mumkin!",
@@ -1277,9 +1279,10 @@
         project_2_tag: "Веб-симуляция",
         project_2_title: "Академия GearHead",
         project_2_desc: "Интерактивный симулятор диагностики и ремонта автомобилей и мотоциклов с руководствами по сборке деталей и тестами в реальном времени.",
-        project_3_tag: "Скоро",
-        project_3_title: "Будущий проект",
-        project_3_desc: "Следите за обновлениями! Новый проект уже в разработке. Я опубликую его репозиторий здесь, как только он будет готов.",
+        project_3_tag: "Финтех-дашборд",
+        project_3_title: "Фондовый рынок Кореи",
+        project_3_desc: "Современный аналитический дашборд с мониторингом акций KOSPI, симуляцией торгов, интерактивными графиками и курсами валют Европейского центрального банка в реальном времени.",
+        project_3_link: "Онлайн-дашборд",
         contact_label: "Связаться",
         contact_title: "Давайте сотрудничать",
         contact_desc: "Есть идея для проекта, хотите сотрудничать или просто сказать привет? Пишите мне в любое время!",
@@ -1346,9 +1349,14 @@
       }
     }
 
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeToggleIcon(savedTheme);
+    // Initialize Theme: set to dark mode
+    let savedTheme = localStorage.getItem('theme');
+    if (!savedTheme || savedTheme === 'light') {
+      savedTheme = 'dark';
+      localStorage.setItem('theme', 'dark');
+    }
+    document.documentElement.setAttribute('data-theme', 'dark');
+    updateThemeToggleIcon('dark');
 
     themeToggle.addEventListener('click', () => {
       const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';

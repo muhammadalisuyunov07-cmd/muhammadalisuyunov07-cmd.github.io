@@ -969,14 +969,13 @@
 
   // --- Application Bootstrap ---
   function init() {
-    // Determine initial theme
-    const savedTheme = localStorage.getItem(THEME_KEY);
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'dark'); // Default dark as requested
+    // Determine initial theme - set to dark mode
+    let savedTheme = localStorage.getItem(THEME_KEY);
+    if (!savedTheme || savedTheme === 'light') {
+      savedTheme = 'dark';
+      localStorage.setItem(THEME_KEY, 'dark');
     }
+    setTheme('dark');
 
     // Determine initial language
     const savedLang = localStorage.getItem(LANG_KEY);
