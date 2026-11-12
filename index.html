@@ -828,6 +828,100 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* Dropdown Menu styling */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 15px);
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      min-width: 200px;
+      box-shadow: 0 10px 30px var(--shadow);
+      list-style: none;
+      padding: 0.5rem 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+      z-index: 1000;
+    }
+
+    .dropdown-menu::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent transparent var(--border) transparent;
+      pointer-events: none;
+    }
+
+    .dropdown-menu::after {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 7px;
+      border-style: solid;
+      border-color: transparent transparent var(--nav-bg) transparent;
+      pointer-events: none;
+    }
+
+    .dropdown::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 15px;
+      display: none;
+    }
+
+    .dropdown:hover::after {
+      display: block;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-menu li {
+      width: 100%;
+    }
+
+    .dropdown-menu li a {
+      display: block;
+      padding: 0.75rem 1.25rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    .dropdown-menu li a::after {
+      display: none !important;
+    }
+
+    .dropdown-menu li a:hover {
+      color: var(--text);
+      background: var(--badge-bg);
+    }
   </style>
 </head>
 <body>
@@ -848,7 +942,14 @@
       <ul>
         <li><a href="#" data-i18n="nav_home">Home</a></li>
         <li><a href="#about" data-i18n="nav_about">About</a></li>
-        <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+        <li class="dropdown">
+          <a href="#projects" data-i18n="nav_projects" class="dropdown-toggle">Projects</a>
+          <ul class="dropdown-menu">
+            <li><a href="https://github.com/muhammadalisuyunov07-cmd/muhammadalisuyunov07-cmd.github.io" target="_blank" data-i18n="dropdown_portfolio">Creative Portfolio</a></li>
+            <li><a href="https://muhammadalisuyunov07-cmd.github.io/car-motorcycle-learning/" target="_blank" data-i18n="dropdown_gearhead">GearHead Academy</a></li>
+            <li><a href="stocks.html">Korea Market Dashboard</a></li>
+          </ul>
+        </li>
         <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
       </ul>
     </nav>
@@ -1062,14 +1163,15 @@
     </footer>
   </main>
 
-  <script>
-    // Translation Dictionaries
+     // Translation Dictionaries
     const translations = {
       en: {
         nav_home: "Home",
         nav_about: "About",
         nav_projects: "Projects",
         nav_contact: "Contact",
+        dropdown_portfolio: "Creative Portfolio",
+        dropdown_gearhead: "GearHead Academy",
         hero_badge: "✦ Personal Portfolio Site",
         hero_title: "Muhammad Ali <span class='gradient-text'>Suyunov</span>",
         hero_desc: "Web developer & tech explorer. I craft modern interfaces, write clean code, and share my work with the world.",
@@ -1107,6 +1209,8 @@
         nav_about: "Haqida",
         nav_projects: "Loyihalar",
         nav_contact: "Aloqa",
+        dropdown_portfolio: "Ijodiy portfolio",
+        dropdown_gearhead: "GearHead akademiyasi",
         hero_badge: "✦ Shaxsiy Portfolio Sayti",
         hero_title: "Muhammad Ali <span class='gradient-text'>Suyunov</span>",
         hero_desc: "Veb-dasturchi va yangi texnologiyalar o'rganuvchisi. Men interaktiv dizaynlar yarataman, toza kod yozaman va dunyoga ulashaman.",
@@ -1144,6 +1248,8 @@
         nav_about: "Обо мне",
         nav_projects: "Проекты",
         nav_contact: "Контакты",
+        dropdown_portfolio: "Креативное портфолио",
+        dropdown_gearhead: "Академия GearHead",
         hero_badge: "✦ Персональный сайт-портфолио",
         hero_title: "Мухаммад Али <span class='gradient-text'>Суюнов</span>",
         hero_desc: "Веб-разработчик и исследователь технологий. Я создаю современные интерфейсы, пишу чистый код и делюсь им с миром.",
@@ -1164,6 +1270,24 @@
         project_1_tag: "Веб-сайт",
         project_1_title: "Креативное портфолио",
         project_1_desc: "Адаптивное и интерактивное портфолио с использованием компонентов glassmorphism, плавных эффектов и модульной структуры.",
+        project_2_tag: "Веб-симуляция",
+        project_2_title: "Академия GearHead",
+        project_2_desc: "Интерактивный симулятор диагностики и ремонта автомобилей и мотоциклов с руководствами по сборке деталей и тестами в реальном времени.",
+        project_3_tag: "Скоро",
+        project_3_title: "Будущий проект",
+        project_3_desc: "Следите за обновлениями! Новый проект уже в разработке. Я опубликую его репозиторий здесь, как только он будет готов.",
+        contact_label: "Связаться",
+        contact_title: "Давайте сотрудничать",
+        contact_desc: "Есть идея для проекта, хотите сотрудничать или просто сказать привет? Пишите мне в любое время!",
+        contact_btn: "Связаться через GitHub",
+        footer_text: "© 2026 Мухаммад Али Суюнов. Разработано с премиальным дизайном."
+      }
+    };айте сотрудничать",
+        contact_desc: "Есть идея для проекта, хотите сотрудничать или просто сказать привет? Пишите мне в любое время!",
+        contact_btn: "Связаться через GitHub",
+        footer_text: "© 2026 Мухаммад Али Суюнов. Разработано с премиальным дизайном."
+      }
+    };",
         project_2_tag: "Веб-симуляция",
         project_2_title: "Академия GearHead",
         project_2_desc: "Интерактивный симулятор диагностики и ремонта автомобилей и мотоциклов с руководствами по сборке деталей и тестами в реальном времени.",

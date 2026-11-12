@@ -1,0 +1,23 @@
+# robots.txt for muhammadalisuyunov07-cmd.github.io
+# Note: robots.txt is a polite advisory protocol, not technical barrier or encryption.
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: *
+Allow: /
